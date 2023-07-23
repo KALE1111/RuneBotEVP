@@ -198,7 +198,7 @@ public class PacketReflection {
 //                }
                 addNode(PACKETWRITER.get(null), packetBufferNode);
 
-                System.out.println(String.format("Logged packet name %s, packet def %s",def.name, def.type.name()));
+//                System.out.println(String.format("Logged packet name %s, packet def %s",def.name, def.type.name()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
