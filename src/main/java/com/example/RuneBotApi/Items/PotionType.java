@@ -12,5 +12,6 @@ public enum PotionType {
     DIVINE_RANGING,
     BASTION,
     DIVINE_BASTION,
-    STAMINA
+    STAMINA,
+    SUPER_ANTI_VENOM
 }
