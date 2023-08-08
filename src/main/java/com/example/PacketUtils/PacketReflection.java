@@ -197,8 +197,6 @@ public class PacketReflection {
 //                    addNode.invoke(null, PACKETWRITER.get(null), packetBufferNode);
 //                }
                 addNode(PACKETWRITER.get(null), packetBufferNode);
-
-//                System.out.println(String.format("Logged packet name %s, packet def %s",def.name, def.type.name()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -212,10 +210,10 @@ public class PacketReflection {
         try {
             Field ay = eqVar0.getClass().getDeclaredField("ay");
             ay.setAccessible(true);
-            Class cq = client.getClass().getClassLoader().loadClass("cq");
-            Method te = cq.getDeclaredMethod("te", ay.get(eqVar0).getClass(), lmVar1.getClass().getSuperclass());
-            te.setAccessible(true);
-            te.invoke(null, ay.get(eqVar0), lmVar1);
+            Class or = client.getClass().getClassLoader().loadClass("or");
+            Method eo = or.getDeclaredMethod("eo", ay.get(eqVar0).getClass(), lmVar1.getClass().getSuperclass());
+            eo.setAccessible(true);
+            eo.invoke(null, ay.get(eqVar0), lmVar1);
 
             Field var1ay = lmVar1.getClass().getDeclaredField("ay");
             Field am = lmVar1.getClass().getDeclaredField("am");
@@ -245,7 +243,8 @@ public class PacketReflection {
             avField.setAccessible(false);
             arField.setAccessible(false);
             ay.setAccessible(false);
-            te.setAccessible(false);
+            eo.setAccessible(false);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

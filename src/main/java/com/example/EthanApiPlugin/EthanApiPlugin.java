@@ -148,7 +148,7 @@ public class EthanApiPlugin extends Plugin {
 
     @SneakyThrows
     public static int getAnimation(NPC npc) {
-        Field animation = npc.getClass().getSuperclass().getDeclaredField("du");
+        Field animation = npc.getClass().getSuperclass().getDeclaredField("cp");
         animation.setAccessible(true);
         int anim = animation.getInt(npc) * 1584912307;
         animation.setAccessible(false);
@@ -367,9 +367,9 @@ public class EthanApiPlugin extends Plugin {
                               int var8) {
         Class invokeClass = client.getClass().getClassLoader().loadClass("ce");
         Method invoke = invokeClass.getDeclaredMethod("kc", int.class, int.class, int.class, int.class, int.class,
-                String.class, String.class, int.class, int.class, int.class);
+                String.class, String.class, int.class, int.class, byte.class);
         invoke.setAccessible(true);
-        invoke.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, 14);
+        invoke.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, (byte)14);
         invoke.setAccessible(false);
     }
 

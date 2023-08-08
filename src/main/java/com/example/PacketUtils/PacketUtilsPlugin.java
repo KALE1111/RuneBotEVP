@@ -1,13 +1,13 @@
 package com.example.PacketUtils;
 
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.Packets.MousePackets;
+import com.example.Packets.WidgetPackets;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.ScriptEvent;
+import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPreFired;
@@ -23,6 +23,7 @@ import net.runelite.client.plugins.PluginManager;
 
 import javax.inject.Inject;
 import javax.swing.*;
+import java.util.Optional;
 
 @Slf4j
 @Singleton
