@@ -23,6 +23,7 @@ public class Equipment {
 
     static {
         equipmentSlotWidgetMapping.put(0, 15);
+        equipmentSlotWidgetMapping.put(-1, 27);
         equipmentSlotWidgetMapping.put(1, 16);
         equipmentSlotWidgetMapping.put(2, 17);
         equipmentSlotWidgetMapping.put(3, 18);
@@ -49,7 +50,12 @@ public class Equipment {
     }
 
     public static EquipmentItemQuery search() {
+        RetryCollection();
         return new EquipmentItemQuery(equipment);
+    }
+
+    public static void RetryCollection(){
+
     }
 
     @SneakyThrows
@@ -70,7 +76,15 @@ public class Equipment {
                 if (item.getId() == 6512 || item.getId() == -1) {
                     continue;
                 }
-                Widget w = client.getWidget(WidgetInfo.EQUIPMENT.getGroupId(), equipmentSlotWidgetMapping.get(i));
+                int map = 27;
+                try{
+                    map = equipmentSlotWidgetMapping.get(i);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                   System.out.println("Unmapped Equipment Change, expected behavior at BA/SW");
+                }
+
+                Widget w = client.getWidget(WidgetInfo.EQUIPMENT.getGroupId(), map);
                 if (w == null || w.getActions() == null) {
                     continue;
                 }

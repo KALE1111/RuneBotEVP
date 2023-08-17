@@ -22,6 +22,7 @@ import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 
 import javax.inject.Inject;
+
 import javax.swing.*;
 import java.util.Optional;
 
@@ -43,7 +44,7 @@ public class PacketUtilsPlugin extends Plugin {
     PacketReflection packetReflection;
     @Inject
     ClientThread thread;
-    public static final int CLIENT_REV = 215;
+    public static final int CLIENT_REV = 216;
     private static boolean loaded = false;
     @Inject
     private PluginManager pluginManager;
