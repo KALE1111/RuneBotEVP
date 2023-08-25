@@ -64,47 +64,52 @@ public class PacketReflection {
         return true;
     }
 
-    @SneakyThrows
-    public static void writeObject(String obfname, Object buffer, Object input) {
-        switch (obfname) {
-            case "dt": //ef
-                BufferMethods.dt(buffer, (Integer) input);
-                break;
-            case "df":
-                BufferMethods.df(buffer, (Integer) input);
-                break;
-            case "dv":
-                BufferMethods.dv(buffer, (Integer) input);
-                break;
-            case "bu":
-                BufferMethods.bu(buffer, (Integer) input);
-                break;
-            case "eh":
-                BufferMethods.eh(buffer, (Integer) input);
-                break;
-            case "dh":
-                BufferMethods.dh(buffer, (Integer) input);
-                break;
-            case "ej":
-                BufferMethods.ej(buffer, (Integer) input);
-                break;
-            case "bx":
-                BufferMethods.bx(buffer, (Integer) input);
-                break;
-            case "dl":
-                BufferMethods.dl(buffer, (Integer) input);
-                break;
-            case "dm":
-                BufferMethods.dm(buffer, (Integer) input);
-                break;
-            case "bk":
-                BufferMethods.bk(buffer, (Integer) input);
-                break;
-            case "eb":
-                BufferMethods.doMethod(buffer, (Integer) input);
-                break;
-        }
-    }
+//    @SneakyThrows
+//    public static void writeObject(String obfname, Object buffer, Object input) {
+//        switch (obfname) {
+//            case "br": //ef
+//                BufferMethods.br(buffer, (Integer) input);
+//                break;
+//            case "de":
+//                BufferMethods.de(buffer, (Integer) input);
+//                break;
+//            case "df":
+//                BufferMethods.df(buffer, (Integer) input);
+//                break;
+//            case "be":
+//                BufferMethods.be(buffer, (Integer) input);
+//                break;
+//            case "dw":
+//                BufferMethods.dw(buffer, (Integer) input);
+//                break;
+//            case "dx":
+//                BufferMethods.dx(buffer, (Integer) input);
+//                break;
+//            case "ez":
+//                BufferMethods.ez(buffer, (Integer) input);
+//                break;
+//            case "dz":
+//                BufferMethods.dz(buffer, (Integer) input);
+//                break;
+//            case "bz":
+//                BufferMethods.bz(buffer, (Integer) input);
+//                break;
+//            case "en":
+//                BufferMethods.en(buffer, (Integer) input);
+//                break;
+//            case "dq":
+//                BufferMethods.dq(buffer, (Integer) input);
+//                break;
+//            case "et":
+//                BufferMethods.et(buffer, (Integer) input);
+//                break;
+//        }
+//    }
+@SneakyThrows
+public static void writeObject(String obfname, Object buffer, Object input) {
+    Method bufferMethod = BufferMethods.class.getDeclaredMethod(obfname,Object.class,int.class);
+    bufferMethod.invoke(null,buffer, input);
+}
 
     @SneakyThrows
     public static void sendPacket(PacketDef def, Object... objects) {
@@ -208,42 +213,49 @@ public class PacketReflection {
 
     public static void addNode(Object eqVar0, Object lmVar1) {
         try {
-            Field ay = eqVar0.getClass().getDeclaredField("ay");
-            ay.setAccessible(true);
-            Class or = client.getClass().getClassLoader().loadClass("or");
-            Method eo = or.getDeclaredMethod("eo", ay.get(eqVar0).getClass(), lmVar1.getClass().getSuperclass());
-            eo.setAccessible(true);
-            eo.invoke(null, ay.get(eqVar0), lmVar1);
+            Field ae = eqVar0.getClass().getDeclaredField("ae");
+            ae.setAccessible(true);
+            Class oc = client.getClass().getClassLoader().loadClass("oc");
+            Method il = oc.getDeclaredMethod("il", ae.get(eqVar0).getClass(), lmVar1.getClass().getSuperclass());
+            il.setAccessible(true);
+            il.invoke(null, ae.get(eqVar0), lmVar1);
+//1.10.9.4 ^^ good
+            Field var1at = lmVar1.getClass().getDeclaredField("at");
 
-            Field var1ay = lmVar1.getClass().getDeclaredField("ay");
-            Field am = lmVar1.getClass().getDeclaredField("am");
-            Field arField = lmVar1.getClass().getDeclaredField("ar");
-            arField.setAccessible(true);
-            Object arObject = arField.get(lmVar1);
-            Field avField = arObject.getClass().getField("av");
-            am.setAccessible(true);
-            avField.setAccessible(true);
-            int amValue = -1643463139 * avField.getInt(arObject);
-            var1ay.setInt(lmVar1, amValue);
-            avField.setInt(arObject, 0);
+            //changes start here
+            //Field am = lmVar1.getClass().getDeclaredField("am");
+            //this changes to another field^^ not used??
 
-            Field var0ar = eqVar0.getClass().getDeclaredField("ar");
-            var0ar.setAccessible(true);
-            var1ay.setAccessible(true);
-            Field ap = eqVar0.getClass().getDeclaredField("ap");
-            ap.setAccessible(true);
-            int var0arValue = var0ar.getInt(eqVar0);
-            int x = 1559877663 * var1ay.getInt(lmVar1);
-            int totalAzValue = var0arValue + x;
-            var0ar.setInt(eqVar0, totalAzValue);
-            ap.setAccessible(false);
-            var0ar.setAccessible(false);
-            var1ay.setAccessible(false);
-            am.setAccessible(false);
-            avField.setAccessible(false);
-            arField.setAccessible(false);
-            ay.setAccessible(false);
-            eo.setAccessible(false);
+            Field aoField = lmVar1.getClass().getDeclaredField("ao");
+            aoField.setAccessible(true);
+            Object aoObject = aoField.get(lmVar1);
+            Field aaField = aoObject.getClass().getField("aa");
+
+            //am.setAccessible(true);
+            aaField.setAccessible(true);
+            int aaValue = 1432958939 * aaField.getInt(aoObject);
+            var1at.setInt(lmVar1, aaValue);
+
+
+            aaField.setInt(aoObject, 0);
+
+            Field var0af = eqVar0.getClass().getDeclaredField("af");
+            var0af.setAccessible(true);
+            var1at.setAccessible(true);
+            //Field ap = eqVar0.getClass().getDeclaredField("ap");
+            //ap.setAccessible(true);
+            int var0afValue = var0af.getInt(eqVar0);
+            int x = -111587233 * var1at.getInt(lmVar1);
+            int totalAzValue = var0afValue + x;
+            var0af.setInt(eqVar0, totalAzValue);
+           // ap.setAccessible(false);
+            var0af.setAccessible(false);
+            var1at.setAccessible(false);
+            //am.setAccessible(false);
+            aaField.setAccessible(false);
+            aoField.setAccessible(false);
+            ae.setAccessible(false);
+            il.setAccessible(false);
 
         } catch (Exception e) {
             e.printStackTrace();

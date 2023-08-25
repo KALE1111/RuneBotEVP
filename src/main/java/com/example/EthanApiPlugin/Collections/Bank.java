@@ -4,6 +4,7 @@ import com.example.EthanApiPlugin.Collections.query.ItemQuery;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -31,9 +32,11 @@ public class Bank {
         return client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER) != null && !client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER).isHidden();
     }
 
+
+
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged e) {
-        if (e.getContainerId() == 95) {
+        if (e.getContainerId() == InventoryID.BANK.getId()) {
             int i = 0;
             Bank.bankItems.clear();
             for (Item item : e.getItemContainer().getItems()) {

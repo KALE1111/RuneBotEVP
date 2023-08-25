@@ -148,27 +148,27 @@ public class EthanApiPlugin extends Plugin {
 
     @SneakyThrows
     public static int getAnimation(NPC npc) {
-        Field animation = npc.getClass().getSuperclass().getDeclaredField("cp");
+        Field animation = npc.getClass().getSuperclass().getDeclaredField("ck");
         animation.setAccessible(true);
-        int anim = animation.getInt(npc) * 1584912307;
+        int anim = animation.getInt(npc) * -1553687919;
         animation.setAccessible(false);
         return anim;
     }
 
     @SneakyThrows
     public static int pathLength(NPC npc) {
-        Field pathLength = npc.getClass().getSuperclass().getDeclaredField("de");
+        Field pathLength = npc.getClass().getSuperclass().getDeclaredField("dq");
         pathLength.setAccessible(true);
-        int path = pathLength.getInt(npc) * 1557847499;
+        int path = pathLength.getInt(npc) * -1388670275;
         pathLength.setAccessible(false);
         return path;
     }
 
     @SneakyThrows
     public static int pathLength(Player player) {
-        Field pathLength = player.getClass().getSuperclass().getDeclaredField("de");
+        Field pathLength = player.getClass().getSuperclass().getDeclaredField("dq");
         pathLength.setAccessible(true);
-        int path = pathLength.getInt(player) * 1557847499;
+        int path = pathLength.getInt(player) * -1388670275;
         pathLength.setAccessible(false);
         return path;
     }
@@ -192,6 +192,7 @@ public class EthanApiPlugin extends Plugin {
         }
         return HeadIcon.values()[headIconArray[0]];
     }
+
 
     @Deprecated
     public int countItem(String str, WidgetInfo container) {
@@ -1147,7 +1148,6 @@ public class EthanApiPlugin extends Plugin {
         }
         return impassible.contains(starting.dx(1).dy(1)) || !walkable.contains(starting.dx(1).dy(1));
     }
-
     static boolean farSEObstructed(WorldPoint starting, HashSet<WorldPoint> impassible, HashSet<WorldPoint> walkable) {
         if (impassible.contains(starting.dx(1).dy(-2)) || !walkable.contains(starting.dx(1).dy(-2))) {
             return true;
@@ -1175,5 +1175,6 @@ public class EthanApiPlugin extends Plugin {
         eventBus.register(RuneLite.getInjector().getInstance(Equipment.class));
 		eventBus.register(RuneLite.getInjector().getInstance(DepositBox.class));
 		eventBus.register(RuneLite.getInjector().getInstance(ShopInventory.class));
+        eventBus.register(RuneLite.getInjector().getInstance(DuelArenaRules.class));
     }
 }

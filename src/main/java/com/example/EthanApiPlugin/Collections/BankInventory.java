@@ -3,6 +3,7 @@ package com.example.EthanApiPlugin.Collections;
 import com.example.EthanApiPlugin.Collections.query.ItemQuery;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -23,6 +24,7 @@ public class BankInventory {
     static List<Widget> bankInventoryItems = new ArrayList<>();
 
     public static ItemQuery search() {
+        RetryCollection();
         return new ItemQuery(bankInventoryItems.stream().filter(Objects::nonNull).collect(Collectors.toList()));
     }
 
@@ -196,7 +198,9 @@ public class BankInventory {
 
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged e) {
-        if (e.getContainerId() == 93) {
+        //client.runScript(6009, 9764864, 28, 1, -1);
+        System.out.println(e.getContainerId());
+        if (e.getContainerId() == 95 || e.getContainerId() == 93) {
             if (client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) == null) {
                 BankInventory.bankInventoryItems.clear();
                 return;
@@ -210,6 +214,12 @@ public class BankInventory {
                 return;
             }
         }
+    }
+
+    public static void RetryCollection(){
+        BankInventory.bankInventoryItems =
+                Arrays.stream(client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER).getDynamicChildren()).filter(Objects::nonNull).filter(x -> x.getItemId() != 6512 && x.getItemId() != -1).collect(Collectors.toList());
+
     }
 
     @Subscribe
