@@ -366,11 +366,11 @@ public class EthanApiPlugin extends Plugin {
     @SneakyThrows
     public static void invoke(int var0, int var1, int var2, int var3, int var4, String var5, String var6, int var7,
                               int var8) {
-        Class invokeClass = client.getClass().getClassLoader().loadClass("ce");
-        Method invoke = invokeClass.getDeclaredMethod("kc", int.class, int.class, int.class, int.class, int.class,
+        Class invokeClass = client.getClass().getClassLoader().loadClass("qq");
+        Method invoke = invokeClass.getDeclaredMethod("lm", int.class, int.class, int.class, int.class, int.class,
                 String.class, String.class, int.class, int.class, byte.class);
         invoke.setAccessible(true);
-        invoke.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, (byte)14);
+        invoke.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, (byte)5);
         invoke.setAccessible(false);
     }
 

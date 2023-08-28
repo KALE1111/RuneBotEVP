@@ -211,56 +211,57 @@ public static void writeObject(String obfname, Object buffer, Object input) {
         }
     }
 
-    public static void addNode(Object eqVar0, Object lmVar1) {
-        try {
-            Field ae = eqVar0.getClass().getDeclaredField("ae");
-            ae.setAccessible(true);
-            Class oc = client.getClass().getClassLoader().loadClass("oc");
-            Method il = oc.getDeclaredMethod("il", ae.get(eqVar0).getClass(), lmVar1.getClass().getSuperclass());
-            il.setAccessible(true);
-            il.invoke(null, ae.get(eqVar0), lmVar1);
-//1.10.9.4 ^^ good
-            Field var1at = lmVar1.getClass().getDeclaredField("at");
-
-            //changes start here
-            //Field am = lmVar1.getClass().getDeclaredField("am");
-            //this changes to another field^^ not used??
-
-            Field aoField = lmVar1.getClass().getDeclaredField("ao");
-            aoField.setAccessible(true);
-            Object aoObject = aoField.get(lmVar1);
-            Field aaField = aoObject.getClass().getField("aa");
-
-            //am.setAccessible(true);
-            aaField.setAccessible(true);
-            int aaValue = 1432958939 * aaField.getInt(aoObject);
-            var1at.setInt(lmVar1, aaValue);
-
-
-            aaField.setInt(aoObject, 0);
-
-            Field var0af = eqVar0.getClass().getDeclaredField("af");
-            var0af.setAccessible(true);
-            var1at.setAccessible(true);
-            //Field ap = eqVar0.getClass().getDeclaredField("ap");
-            //ap.setAccessible(true);
-            int var0afValue = var0af.getInt(eqVar0);
-            int x = -111587233 * var1at.getInt(lmVar1);
-            int totalAzValue = var0afValue + x;
-            var0af.setInt(eqVar0, totalAzValue);
-           // ap.setAccessible(false);
-            var0af.setAccessible(false);
-            var1at.setAccessible(false);
-            //am.setAccessible(false);
-            aaField.setAccessible(false);
-            aoField.setAccessible(false);
-            ae.setAccessible(false);
-            il.setAccessible(false);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void addNode(Object eqVar0, Object lmVar1) {
+//        try {
+//            Field var0aeField = eqVar0.getClass().getDeclaredField("ae");
+//            var0aeField.setAccessible(true);
+//            Object var0arObj = var0aeField.get(eqVar0);
+//            Method aeaeMethod = var0arObj.getClass().getDeclaredMethod("ae",lmVar1.getClass().getSuperclass());
+//            //Method aemethod = aeclass.getDeclaredMethod("ae", lmVar1.getClass().getSuperclass())
+//            aeaeMethod.setAccessible(true);
+//            aeaeMethod.invoke(null, lmVar1);
+//            aeaeMethod.setAccessible(false);
+////1.10.9.4 ^^ good
+//            Field var1ae = lmVar1.getClass().getDeclaredField("ae");
+//            var1ae.setAccessible(true);
+//            //changes start here
+//            //Field am = lmVar1.getClass().getDeclaredField("am");
+//            //this changes to another field^^ not used??
+//
+//            Field aoField = lmVar1.getClass().getDeclaredField("ao");
+//            aoField.setAccessible(true);
+//            Object aoObject = aoField.get(lmVar1);
+//            Field aaField = aoObject.getClass().getField("aa");
+//
+//            //am.setAccessible(true);
+//            aaField.setAccessible(true);
+//            int aaValue = 1432958939 * aaField.getInt(aoObject);
+//            var1ae.setInt(lmVar1, aaValue);
+//
+//
+//            aaField.setInt(aoObject, 0);
+//
+//            Field var0ao = eqVar0.getClass().getDeclaredField("ao");
+//            var0ao.setAccessible(true);
+//            //var1at.setAccessible(true);
+//            //Field ap = eqVar0.getClass().getDeclaredField("ap");
+//            //ap.setAccessible(true);
+//            int var0aoValue = var0ao.getInt(eqVar0);
+//            int x = -111587233 * var1ae.getInt(lmVar1);
+//            int totalAzValue = var0aoValue + x;
+//            var0ao.setInt(eqVar0, totalAzValue);
+//           // ap.setAccessible(false);
+//            var0ao.setAccessible(false);
+//            var1ae.setAccessible(false);
+//            //am.setAccessible(false);
+//            aaField.setAccessible(false);
+//            aoField.setAccessible(false);
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 //    @SneakyThrows
 //    static Object getPacketBufferNode(Object clientPacket, Object isaacCipher) {
@@ -417,6 +418,53 @@ public static void writeObject(String obfname, Object buffer, Object input) {
 //        Thread thread = new Thread(myRunnable);
 //        thread.start();
 //    }
+
+    public static void addNode(Object packetWriter, Object packetBufferNode) {
+        if (PacketUtilsPlugin.usingClientAddNode) {
+            try {
+                Method addNode = null;
+                long garbageValue = Math.abs(Long.parseLong(ObfuscatedNames.addNodeGarbageValue));
+                if (garbageValue < 256) {
+                    addNode = packetWriter.getClass().getDeclaredMethod(ObfuscatedNames.addNodeMethodName, packetBufferNode.getClass(), byte.class);
+                    addNode.setAccessible(true);
+                    addNode.invoke(packetWriter, packetBufferNode, Byte.parseByte(ObfuscatedNames.addNodeGarbageValue));
+                } else if (garbageValue < 32768) {
+                    addNode = packetWriter.getClass().getDeclaredMethod(ObfuscatedNames.addNodeMethodName, packetBufferNode.getClass(), short.class);
+                    addNode.setAccessible(true);
+                    addNode.invoke(packetWriter, packetBufferNode, Short.parseShort(ObfuscatedNames.addNodeGarbageValue));
+                } else if (garbageValue < Integer.MAX_VALUE) {
+                    addNode = packetWriter.getClass().getDeclaredMethod(ObfuscatedNames.addNodeMethodName, packetBufferNode.getClass(), int.class);
+                    addNode.setAccessible(true);
+                    addNode.invoke(packetWriter, packetBufferNode, Integer.parseInt(ObfuscatedNames.addNodeGarbageValue));
+                }
+                if(addNode!=null){
+                    addNode.setAccessible(false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                Method addNode = PacketUtilsPlugin.addNodeMethod;
+                addNode.setAccessible(true);
+                if (addNode.getParameterCount() == 2) {
+                    addNode.invoke(null, packetWriter, packetBufferNode);
+                } else {
+                    long garbageValue = Math.abs(Long.parseLong(ObfuscatedNames.addNodeGarbageValue));
+                    if (garbageValue < 256) {
+                        addNode.invoke(null, packetWriter, packetBufferNode, Byte.parseByte(ObfuscatedNames.addNodeGarbageValue));
+                    } else if (garbageValue < 32768) {
+                        addNode.invoke(null, packetWriter, packetBufferNode, Short.parseShort(ObfuscatedNames.addNodeGarbageValue));
+                    } else if (garbageValue < Integer.MAX_VALUE) {
+                        addNode.invoke(null, packetWriter, packetBufferNode, Integer.parseInt(ObfuscatedNames.addNodeGarbageValue));
+                    }
+                }
+                addNode.setAccessible(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @SneakyThrows
     static Field fetchPacketField(String name) {
