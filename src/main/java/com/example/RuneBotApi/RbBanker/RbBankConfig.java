@@ -1,5 +1,6 @@
 package com.example.RuneBotApi.RbBanker;
 
+import com.example.RuneBotApi.MapSquare;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.client.config.Config;
@@ -54,20 +55,22 @@ public interface RbBankConfig extends Config {
     @Getter
     enum BankingLocation
     {
-        GRAND_EXCHANGE(new ObjectActionPair("_GE or Varrock portal", "Grand Exchange"));
+        GRAND_EXCHANGE(new ObjectActionLocationTrio("_GE or Varrock portal", "Grand Exchange", MapSquare.GRAND_EXCHANGE.getId()));
 
-        private final ObjectActionPair objectActionPair;
+        private final ObjectActionLocationTrio objectActionPair;
     }
 
-    class ObjectActionPair {
+    class ObjectActionLocationTrio {
 
         private final String left;
         private final String right;
+        private final int locationId;
 
-        ObjectActionPair(String left, String right)
+        ObjectActionLocationTrio(String left, String right, int locationId)
         {
             this.left = left;
             this.right = right;
+            this.locationId = locationId;
         }
 
         public String getObject() {
@@ -76,6 +79,10 @@ public interface RbBankConfig extends Config {
 
         public String getAction() {
             return right;
+        }
+
+        public int getLocationId() {
+            return locationId;
         }
     }
 }

@@ -5,6 +5,7 @@ import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.InteractionApi.InventoryInteraction;
 import com.example.InteractionApi.TileObjectInteraction;
+import com.example.RuneBotApi.LocalPlayer.LocationInformation;
 import com.example.RuneBotApi.RBApi;
 import com.example.RuneBotApi.RBConstants;
 import com.example.RuneBotApi.RbExceptions.NoSuchGameObjectException;
@@ -107,6 +108,10 @@ public class RbBankController extends Plugin {
                     throw new NoSuchGameObjectException("Object '" + config.bankingLocation().getObjectActionPair().getObject() + "' does not exist in the current scene'");
                 }
             break; case EXIT_POH:
+                if (LocationInformation.getMapSquareId() != config.bankingLocation().getObjectActionPair().getLocationId())
+                    return true;
+                state = State.OPEN_BANK;
+            break; case OPEN_BANK:
             break; case FAILURE:
         }
         return true;
