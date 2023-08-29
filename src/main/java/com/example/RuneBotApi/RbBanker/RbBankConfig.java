@@ -57,7 +57,7 @@ public interface RbBankConfig extends Config {
     {
         GRAND_EXCHANGE(new ObjectActionLocationTrio("_GE or Varrock portal", "Grand Exchange", MapSquare.GRAND_EXCHANGE.getId()));
 
-        private final ObjectActionLocationTrio objectActionPair;
+        private final ObjectActionLocationTrio objectActionLocationTrio;
     }
 
     class ObjectActionLocationTrio {

@@ -96,19 +96,19 @@ public class RbBankController extends Plugin {
                     pathable += EthanApiPlugin.canPathToTile(obj.getWorldLocation().dy(-1)).isReachable() ? 1 : 0;
 
                     if (pathable > 1) {
-                        TileObjectInteraction.interact(bankingObject.get(), config.bankingLocation().getObjectActionPair().getAction());
+                        TileObjectInteraction.interact(bankingObject.get(), config.bankingLocation().getObjectActionLocationTrio().getAction());
                         state = State.EXIT_POH;
                     } else {
                         state = State.FAILURE;
-                        throw new NoWalkablePathException("Cannot path to object '" + config.bankingLocation().getObjectActionPair().getObject() + "'");
+                        throw new NoWalkablePathException("Cannot path to object '" + config.bankingLocation().getObjectActionLocationTrio().getObject() + "'");
                     }
 
                 } else {
                     state = State.FAILURE;
-                    throw new NoSuchGameObjectException("Object '" + config.bankingLocation().getObjectActionPair().getObject() + "' does not exist in the current scene'");
+                    throw new NoSuchGameObjectException("Object '" + config.bankingLocation().getObjectActionLocationTrio().getObject() + "' does not exist in the current scene'");
                 }
             break; case EXIT_POH:
-                if (LocationInformation.getMapSquareId() != config.bankingLocation().getObjectActionPair().getLocationId())
+                if (LocationInformation.getMapSquareId() != config.bankingLocation().getObjectActionLocationTrio().getLocationId())
                     return true;
                 state = State.OPEN_BANK;
             break; case OPEN_BANK:
@@ -124,7 +124,7 @@ public class RbBankController extends Plugin {
         if (config.bankingLocation() == RbBankConfig.BankingLocation.GRAND_EXCHANGE) {
             bankingObject = TileObjects.search().withId(13615).first();
         } else {
-            bankingObject = TileObjects.search().withName(config.bankingLocation().getObjectActionPair().getObject()).first();
+            bankingObject = TileObjects.search().withName(config.bankingLocation().getObjectActionLocationTrio().getObject()).first();
         }
         return bankingObject;
     }
@@ -135,7 +135,6 @@ public class RbBankController extends Plugin {
         USE_POOL,
         AWAIT_POOL,
         DOOR_STUCK,
-        SET_DOORS_OPEN,
         EXIT_POH,
         OPEN_BANK,
         DEPOSIT_ITEMS,
