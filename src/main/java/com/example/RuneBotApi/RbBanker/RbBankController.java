@@ -1,8 +1,23 @@
 package com.example.RuneBotApi.RbBanker;
 
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.Collections.TileObjects;
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.InteractionApi.InventoryInteraction;
+import com.example.InteractionApi.TileObjectInteraction;
+import com.example.RuneBotApi.RBApi;
+import com.example.RuneBotApi.RBConstants;
+import com.example.RuneBotApi.RbExceptions.NoSuchGameObjectException;
+import com.example.RuneBotApi.RbExceptions.NoWalkablePathException;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.TileObject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+
+import java.util.Optional;
 
 
 /**
@@ -11,41 +26,119 @@ import net.runelite.client.plugins.PluginDescriptor;
  */
 @Singleton
 @PluginDescriptor(
-        name = "<html><font color=#86C43F>[RB]</font> RB Banking config</html>",
+        name = "<html><font color=#86C43F>[RB]</font> Banker/Seller</html>",
         description = "Configuration for banking and selling items on the ge",
-        tags = {"Banking"}
+        enabledByDefault = true,
+        tags = {"Banking"},
+        hidden = false
 )
 public class RbBankController extends Plugin {
 
+    private int timeout = 0;
     private State state;
+    private RbBankConfig config = RBApi.getConfigManager().getConfig(RbBankConfig.class);
+    @Provides
+    public RbBankConfig getConfig(ConfigManager configManager) {
+        return config;
+    }
+    private Client client = RBApi.getClient();
 
-    RbBankController()
+
+    private boolean sellItems = false;
+
+    //var for if we want to sell items at [config] hours
+
+
+    public RbBankController()
     {
-        state = State.TELEPORT;
+//        state = State.TELEPORT;
+        state = State.USE_POOL;
     }
 
-    boolean eventLoop()
-    {
+    public boolean eventLoop() {
+        if (0 < timeout--) return true; // only exec if no timeout
 
 
         switch (state)
         {
             case TELEPORT:
-                break; case OPEN_BANK:
-            break; case DEPOSIT_ITEMS:
-            break; case WITHDRAW_ITEMS:
-            break; case RETURN:
-        }
+                if (Inventory.search().withId(RBConstants.houseTabId).result().isEmpty()) state = State.FAILURE;
+                InventoryInteraction.useItem(RBConstants.houseTabId, "Break");
+                timeout = 8;
+                state = State.DOOR_STUCK;
+            break; case USE_POOL:
+                Optional<TileObject> pool = TileObjects.search().withAction("Drink").first();
+                System.out.println("pool.isPresent() = " + pool.isPresent());
+                if (pool.isPresent()) {
+                    TileObjectInteraction.interact(pool.get(), "Drink");
+                    state = State.AWAIT_POOL;
+                    timeout = 2;
+                    return true;
+                } else {
+                    state = State.DOOR_STUCK;
+                }
+            break; case AWAIT_POOL:
+                if (!EthanApiPlugin.isMoving()) state = State.DOOR_STUCK;
+            break; case DOOR_STUCK:
+                Optional<TileObject> bankingObject = getBankingObject();
 
+                if (bankingObject.isPresent())
+                {
+                    TileObject obj = bankingObject.get();
+
+                    // we need to have LoS to at least 2 orthogonal tiles otherwise we could end up on the other side of a wall
+                    // finding pathable tiles to object.getWorldLocation doesn't work since the destination resides within the obj
+                    int pathable = 0;
+                    pathable += EthanApiPlugin.canPathToTile(obj.getWorldLocation().dx(1)).isReachable() ? 1 : 0;
+                    pathable += EthanApiPlugin.canPathToTile(obj.getWorldLocation().dx(-1)).isReachable() ? 1 : 0;
+                    pathable += EthanApiPlugin.canPathToTile(obj.getWorldLocation().dy(1)).isReachable() ? 1 : 0;
+                    pathable += EthanApiPlugin.canPathToTile(obj.getWorldLocation().dy(-1)).isReachable() ? 1 : 0;
+
+                    if (pathable > 1) {
+                        TileObjectInteraction.interact(bankingObject.get(), config.bankingLocation().getObjectActionPair().getAction());
+                        state = State.EXIT_POH;
+                    } else {
+                        state = State.FAILURE;
+                        throw new NoWalkablePathException("Cannot path to object '" + config.bankingLocation().getObjectActionPair().getObject() + "'");
+                    }
+
+                } else {
+                    state = State.FAILURE;
+                    throw new NoSuchGameObjectException("Object '" + config.bankingLocation().getObjectActionPair().getObject() + "' does not exist in the current scene'");
+                }
+            break; case EXIT_POH:
+            break; case FAILURE:
+        }
         return true;
+    }
+
+
+    private Optional<TileObject> getBankingObject()
+    {
+        Optional<TileObject> bankingObject;
+        if (config.bankingLocation() == RbBankConfig.BankingLocation.GRAND_EXCHANGE) {
+            bankingObject = TileObjects.search().withId(13615).first();
+        } else {
+            bankingObject = TileObjects.search().withName(config.bankingLocation().getObjectActionPair().getObject()).first();
+        }
+        return bankingObject;
     }
 
     private enum State
     {
         TELEPORT,
+        USE_POOL,
+        AWAIT_POOL,
+        DOOR_STUCK,
+        SET_DOORS_OPEN,
+        EXIT_POH,
         OPEN_BANK,
         DEPOSIT_ITEMS,
+        // no sell item check in case bad rng and account dies over and over and over and we don't hit this point before 6h log
+        // always check to see if we will use the GeSeller class from the class that calls this event loop
         WITHDRAW_ITEMS,
-        RETURN
+        RETURN,
+        FAILURE // implement failure handler that logs user out and prints the reason in the log file
     }
+
 }

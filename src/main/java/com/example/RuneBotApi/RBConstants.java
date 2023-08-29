@@ -9,6 +9,7 @@ public class RBConstants {
 
     // ~~~~Misc~~~~
     public static final int coinPouchId = 22531;
+    public static final int houseTabId = 8013;
 
 
     // ~~~~Food~~~~
