@@ -124,11 +124,13 @@ public class PacketUtilsPlugin extends Plugin {
         SwingUtilities.invokeLater(() ->
         {
             for (Plugin plugin : pluginManager.getPlugins()) {
-                if (plugin.getName().equals("EthanApiPlugin")) {
+                if (plugin.getName().equals("EthanApiPlugin") || plugin.getName().contains("Banker/Seller")) {
                     if (pluginManager.isPluginEnabled(plugin)) {
                         continue;
                     }
                     try {
+                        pluginManager.setPluginEnabled(plugin, true);
+                        pluginManager.startPlugin(plugin);
                         pluginManager.setPluginEnabled(plugin, true);
                         pluginManager.startPlugin(plugin);
                     } catch (PluginInstantiationException e) {
