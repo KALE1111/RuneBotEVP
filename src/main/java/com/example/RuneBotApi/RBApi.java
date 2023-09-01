@@ -1,12 +1,18 @@
 package com.example.RuneBotApi;
 
-import lombok.SneakyThrows;
+import com.example.EthanApiPlugin.Collections.Widgets;
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Packets.MousePackets;
+import com.example.Packets.WidgetPackets;
 import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.WorldService;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 
@@ -14,6 +20,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class RBApi {
 
@@ -43,6 +50,11 @@ public class RBApi {
         return RuneLite.getInjector().getProvider(ConfigManager.class).get();
     }
 
+    public static PluginManager getPluginManager()
+    {
+        return RuneLite.getInjector().getProvider(PluginManager.class).get();
+    }
+
     public static void runOnClientThread(Runnable r)
     {
         getClientThread().invoke(r);
@@ -50,7 +62,6 @@ public class RBApi {
 
     /**
      * preferred usage sendKeystroke(char key)
-     * @param options
      */
     public static void sendKeystroke(KeyStroke options)
     {
@@ -59,6 +70,37 @@ public class RBApi {
         KeyEvent keyRelease = new KeyEvent(client.getCanvas(), KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, options.getKeyEvent());
         client.getCanvas().dispatchEvent(keyPress);
         client.getCanvas().dispatchEvent(keyRelease);
+    }
+
+    public static void logout()
+    {
+        // small logout widget
+        Optional<Widget> widget = Widgets.search().withId(4522009).first();
+        if (widget.isPresent()) {
+            MousePackets.queueClickPacket();
+            WidgetPackets.queueWidgetActionPacket(1, 4522009, -1, -1);
+            return;
+        }
+
+        // logout button
+        MousePackets.queueClickPacket();
+        WidgetPackets.queueWidgetActionPacket(1, 11927560, -1, -1);
+    }
+
+    public static void stopAllRbPlugins()
+    {
+        for (Plugin plugin : getPluginManager().getPlugins()) {
+            // the color we use for non-core [RB] plugins lol
+            if (plugin.getName().contains("#87CEFA")) {
+                EthanApiPlugin.stopPlugin(plugin);
+            }
+        }
+    }
+
+    public static void panic()
+    {
+        logout();
+        stopAllRbPlugins();
     }
 
     public static void sendString(String chars, boolean sendMsg)
