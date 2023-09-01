@@ -37,11 +37,11 @@ public class RbBankController extends Plugin {
 //    protected int timeout = 0;
 //    protected int errTimer = 0;
 //    private State state;
-//    protected RbBankConfig config = RBApi.getConfigManager().getConfig(RbBankConfig.class);
-//    @Provides
-//    public RbBankConfig getConfig(ConfigManager configManager) {
-//        return config;
-//    }
+    protected RbBankConfig config = RBApi.getConfigManager().getConfig(RbBankConfig.class);
+    @Provides
+    public RbBankConfig getConfig(ConfigManager configManager) {
+        return config;
+    }
 //    protected Client client = RBApi.getClient();
 //    private ResupplyController resupplyController;
 //
