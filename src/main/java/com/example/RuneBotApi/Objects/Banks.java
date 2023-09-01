@@ -41,6 +41,7 @@ public class Banks {
             // if neither the bank nor pin widgets are open and this flag is set, we entered the pin incorrectly
             if (attemptingPin) {
                 attemptingPin = false;
+                RBApi.panic();
                 throw new InvalidConfigException("Invalid bank pin provided in Banker/Seller config.");
             }
 
