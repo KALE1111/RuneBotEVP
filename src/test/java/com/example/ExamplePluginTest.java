@@ -5,7 +5,6 @@ import com.example.EthanApiPlugin.EthanApiPlugin;
 
 import com.example.PacketUtils.PacketUtilsPlugin;
 
-import com.example.RuneBotApi.RbBanker.RbBankController;
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 

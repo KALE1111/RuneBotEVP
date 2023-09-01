@@ -6,7 +6,6 @@ import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.InteractionApi.InventoryInteraction;
 import com.example.InteractionApi.TileObjectInteraction;
 import com.example.RuneBotApi.LocalPlayer.LocationInformation;
-import com.example.RuneBotApi.Movement;
 import com.example.RuneBotApi.Objects.Banks;
 import com.example.RuneBotApi.RBApi;
 import com.example.RuneBotApi.RBConstants;
@@ -31,16 +30,14 @@ import java.util.Optional;
 @PluginDescriptor(
         name = "<html><font color=#86C43F>[RB]</font> Banker/Seller</html>",
         description = "Configuration for banking and selling items on the ge",
-        enabledByDefault = true,
-        tags = {"Banking"},
-        hidden = false
+        tags = {"Banking"}
 )
 public class RbBankController extends Plugin {
 
     protected int timeout = 0;
     protected int errTimer = 0;
     private State state;
-    private RbBankConfig config = RBApi.getConfigManager().getConfig(RbBankConfig.class);
+    protected RbBankConfig config = RBApi.getConfigManager().getConfig(RbBankConfig.class);
     @Provides
     public RbBankConfig getConfig(ConfigManager configManager) {
         return config;
@@ -58,11 +55,10 @@ public class RbBankController extends Plugin {
     public RbBankController()
     {
 //        this.resupplyController = new ResupplyController();
-        state = State.USE_POOL;
+        state = State.OPEN_BANK;
     }
 
-    public boolean eventLoop()
-    {
+    public boolean eventLoop() {
         if (0 < timeout--) return true; // only exec if no timeout
 
 
@@ -103,9 +99,14 @@ public class RbBankController extends Plugin {
                 }
                 state = State.OPEN_BANK;
             break; case OPEN_BANK:
-                if (!Banks.openNearestBank()) state = State.BANK_MANAGER;
+                try {
+                    if (!Banks.openNearestBank()) state = State.BANK_MANAGER;
+                } catch (Exception e) {
+                    RBApi.panic();
+                }
             break; case BANK_MANAGER:
                 return resupplyController.eventLoop(); // when this returns false we return execution to the yielding class
+
         }
         return true;
     }

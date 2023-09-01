@@ -3,7 +3,6 @@ package com.example.RuneBotApi.RbBanker;
 import com.example.RuneBotApi.MapSquare;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -42,7 +41,7 @@ public interface RbBankConfig extends Config {
             description = "Buys supplies from the GE if you run out",
             position = 5
     )
-    default Boolean buyItemsIfNeeded() { return false; }
+    default boolean buyItemsIfNeeded() { return false; }
 
     @ConfigItem(
             keyName = "sellLoot",
@@ -50,7 +49,7 @@ public interface RbBankConfig extends Config {
             description = "Sells loot on the GE before 6 hour log",
             position = 6
     )
-    default Boolean sellLoot() { return false; }
+    default boolean sellLoot() { return false; }
 
     @ConfigItem(
             keyName = "lootList",
@@ -75,6 +74,14 @@ public interface RbBankConfig extends Config {
             position = 9
     )
     default String loginPassword() { return ""; }
+
+    @ConfigItem(
+            keyName = "bankPin",
+            name = "Bank Pin",
+            description = "Your bank pin",
+            position = 10
+    )
+    default String bankPin() { return ""; }
 
     @AllArgsConstructor
     @Getter
