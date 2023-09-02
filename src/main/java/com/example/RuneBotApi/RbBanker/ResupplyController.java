@@ -37,13 +37,15 @@ public class ResupplyController {
                     log.error("Your bank was full when trying to deposit all your items.");
                     RBApi.panic();
                 }
-                if (config.sellLoot()) state = State.SELL_ON_GE;
+//                if (config.sellLoot()) state = State.SELL_ON_GE;
+                if (false) state = State.SELL_ON_GE;
                                   else state = State.CHECK_FOR_ITEMS;
             break; case SELL_ON_GE:
             break; case CHECK_FOR_ITEMS:
                 Set<String> missingItems = Banks.checkForItems(RBApi.configJSONToHashMap(config.desiredItems()).keySet());
                 if (!missingItems.isEmpty()) {
-                    if (config.buyItemsIfNeeded()) {
+//                    if (config.buyItemsIfNeeded()) {
+                    if (false) {
                         state = State.REBUY_MISSING_ITEMS;
                         return true;
                     } else {

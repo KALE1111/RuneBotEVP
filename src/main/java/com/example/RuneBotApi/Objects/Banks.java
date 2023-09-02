@@ -119,13 +119,28 @@ public class Banks {
 
     /**
      * currently all options other than "Withdraw-X" are supported
+     * will perform between 3 and 6 clicks per tick
      */
     public static boolean withdrawItems(Map<String, Integer> configItems)
+    {
+        return withdrawItemsWithAmount(configItems, RBRandom.randRange(3, 6));
+    }
+
+    /**
+     * currently all options other than "Withdraw-X" are supported
+     * will perform clickLimiter clicks per tick
+     */
+    public static boolean withdrawItems(Map<String, Integer> configItems, int clickLimiter)
+    {
+        return withdrawItemsWithAmount(configItems, clickLimiter);
+    }
+
+    private static boolean withdrawItemsWithAmount(Map<String, Integer> configItems, int clickLimiter)
     {
         int index = 0;
         int itemAmount;
         int clicks = 0;
-        stopAt = RBRandom.randRange(3, 6);
+        stopAt = clickLimiter;
         Widget item;
 
         Set<String> keys = configItems.keySet();
@@ -161,14 +176,14 @@ public class Banks {
         while (amount >= 10) {
             BankInteraction.useItem(item, "Withdraw-10");
             amount -= 10;
-            clicks += 2;
+            clicks += 1;
         }
         if (Inventory.full()) return -1;
 
         while (amount >= 5) {
             BankInteraction.useItem(item, "Withdraw-5");
             amount -= 5;
-            clicks += 2;
+            clicks += 1;
         }
         if (Inventory.full()) return -1;
 

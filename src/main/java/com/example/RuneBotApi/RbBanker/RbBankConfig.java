@@ -26,54 +26,54 @@ public interface RbBankConfig extends Config {
             position = 3
     )
     default String desiredItems() { return ""; }
-
-    @ConfigItem(
-            keyName = "usedAmmo",
-            name = "Ammunition",
-            description = "adamant dart, trident of the swamp, crumble undead, etc",
-            position = 4
-    )
-    default String usedAmmo() { return ""; }
-
-    @ConfigItem(
-            keyName = "buySupplies",
-            name = "Rebuy Supplies?",
-            description = "Buys supplies from the GE if you run out",
-            position = 5
-    )
-    default boolean buyItemsIfNeeded() { return false; }
-
-    @ConfigItem(
-            keyName = "sellLoot",
-            name = "Sell loot?",
-            description = "Sells loot on the GE before 6 hour log",
-            position = 6
-    )
-    default boolean sellLoot() { return false; }
-
-    @ConfigItem(
-            keyName = "lootList",
-            name = "Loot List",
-            description = "item 1, item 2, ite*, item 4: amount to leave in bank, item 5: 100",
-            position = 7
-    )
-    default String lootList() { return ""; }
-
-    @ConfigItem(
-            keyName = "loginName",
-            name = "Login Name (optional)",
-            description = "Username used to login to the account",
-            position = 8
-    )
-    default String loginName() { return ""; }
-
-    @ConfigItem(
-            keyName = "loginPassword",
-            name = "Login Password (optional)",
-            description = "Password used to login to the account",
-            position = 9
-    )
-    default String loginPassword() { return ""; }
+//
+//    @ConfigItem(
+//            keyName = "usedAmmo",
+//            name = "Ammunition",
+//            description = "adamant dart, trident of the swamp, crumble undead, etc",
+//            position = 4
+//    )
+//    default String usedAmmo() { return ""; }
+//
+//    @ConfigItem(
+//            keyName = "buySupplies",
+//            name = "Rebuy Supplies?",
+//            description = "Buys supplies from the GE if you run out",
+//            position = 5
+//    )
+//    default boolean buyItemsIfNeeded() { return false; }
+//
+//    @ConfigItem(
+//            keyName = "sellLoot",
+//            name = "Sell loot?",
+//            description = "Sells loot on the GE before 6 hour log",
+//            position = 6
+//    )
+//    default boolean sellLoot() { return false; }
+//
+//    @ConfigItem(
+//            keyName = "lootList",
+//            name = "Loot List",
+//            description = "item 1, item 2, ite*, item 4: amount to leave in bank, item 5: 100",
+//            position = 7
+//    )
+//    default String lootList() { return ""; }
+//
+//    @ConfigItem(
+//            keyName = "loginName",
+//            name = "Login Name (optional)",
+//            description = "Username used to login to the account",
+//            position = 8
+//    )
+//    default String loginName() { return ""; }
+//
+//    @ConfigItem(
+//            keyName = "loginPassword",
+//            name = "Login Password (optional)",
+//            description = "Password used to login to the account",
+//            position = 9
+//    )
+//    default String loginPassword() { return ""; }
 
     @ConfigItem(
             keyName = "bankPin",
