@@ -22,7 +22,7 @@ public interface RbBankConfig extends Config {
     @ConfigItem(
             keyName = "desiredInventory",
             name = "Inventory Items",
-            description = "void mage helm: 1, shark: 10, super rest*: 2, Teleport to house: >3, 100",
+            description = "void mage*, super restore(4): 2, Teleport to house: ab1, shark: all",
             position = 3
     )
     default String desiredItems() { return ""; }
