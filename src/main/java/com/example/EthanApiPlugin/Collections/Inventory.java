@@ -39,12 +39,16 @@ public class Inventory {
         return search().withName(itemName).result().size();
     }
 
+    public static void reloadInventory() {
+        Inventory.inventoryItems =
+                Arrays.stream(client.getWidget(WidgetInfo.INVENTORY).getDynamicChildren()).filter(Objects::nonNull).filter(x -> x.getItemId() != 6512 && x.getItemId() != -1).collect(Collectors.toList());
+    }
+
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged e) {
         client.runScript(6009, 9764864, 28, 1, -1);
         if (e.getContainerId() == 93) {
-            Inventory.inventoryItems =
-                    Arrays.stream(client.getWidget(WidgetInfo.INVENTORY).getDynamicChildren()).filter(Objects::nonNull).filter(x -> x.getItemId() != 6512 && x.getItemId() != -1).collect(Collectors.toList());
+            reloadInventory();
         }
     }
 
