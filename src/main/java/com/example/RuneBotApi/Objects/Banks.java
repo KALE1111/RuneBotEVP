@@ -1,20 +1,26 @@
 package com.example.RuneBotApi.Objects;
 
+import com.example.EthanApiPlugin.Collections.Bank;
+import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.Collections.TileObjects;
+import com.example.EthanApiPlugin.Collections.query.ItemQuery;
+import com.example.InteractionApi.BankInteraction;
 import com.example.InteractionApi.TileObjectInteraction;
+import com.example.Packets.MousePackets;
+import com.example.Packets.WidgetPackets;
 import com.example.RuneBotApi.RBApi;
+import com.example.RuneBotApi.RBRandom;
 import com.example.RuneBotApi.RbBanker.RbBankConfig;
 import com.example.RuneBotApi.RbExceptions.AwaitTimeoutException;
 import com.example.RuneBotApi.RbExceptions.InvalidConfigException;
 import com.example.RuneBotApi.RbExceptions.NoSuchGameObjectException;
-import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.TileObject;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
-import net.runelite.client.config.ConfigManager;
 
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Opens the nearest banking object (some NPCs cause you to get stuck)
@@ -27,6 +33,8 @@ public class Banks {
     private static int bankPinIndex = 0;
     private static boolean attemptingPin = false;
     private static final RbBankConfig config = RBApi.getConfigManager().getConfig(RbBankConfig.class);
+    private static int configIndex = 0;
+    private static int stopAt = 0;
 
 
     public static boolean openNearestBank() throws AwaitTimeoutException
@@ -83,9 +91,14 @@ public class Banks {
 
         char[] pinArray = pin.toCharArray();
 
-        if (pinArray.length != 4) throw new InvalidConfigException("Bank pin must be exactly 4 characters.");
-        if (pinArray[bankPinIndex] < '0' || pinArray[bankPinIndex] > '9')
+        if (pinArray.length != 4) {
+            attemptingPin = false;
+            throw new InvalidConfigException("Bank pin must be exactly 4 characters.");
+        }
+        if (pinArray[bankPinIndex] < '0' || pinArray[bankPinIndex] > '9') {
+            attemptingPin = false;
             throw new InvalidConfigException("Bank pin must only contain numbers.. baka");
+        }
 
         RBApi.sendKeystroke(pinArray[bankPinIndex++]);
 
@@ -96,4 +109,113 @@ public class Banks {
 
         return true;
     }
+
+    public static boolean depositInventory()
+    {
+        MousePackets.queueClickPacket();
+        WidgetPackets.queueWidgetActionPacket(1, 786474, -1, -1);
+        return true;
+    }
+
+    /**
+     * currently all options other than "Withdraw-X" are supported
+     * will perform between 3 and 6 clicks per tick
+     */
+    public static boolean withdrawItems(Map<String, Integer> configItems)
+    {
+        return withdrawItemsWithAmount(configItems, RBRandom.randRange(3, 6));
+    }
+
+    /**
+     * currently all options other than "Withdraw-X" are supported
+     * will perform clickLimiter clicks per tick
+     */
+    public static boolean withdrawItems(Map<String, Integer> configItems, int clickLimiter)
+    {
+        return withdrawItemsWithAmount(configItems, clickLimiter);
+    }
+
+    private static boolean withdrawItemsWithAmount(Map<String, Integer> configItems, int clickLimiter)
+    {
+        int index = 0;
+        int itemAmount;
+        int clicks = 0;
+        stopAt = clickLimiter;
+        Widget item;
+
+        Set<String> keys = configItems.keySet();
+
+        for (String key : keys)
+        {
+            if (index++ < configIndex) continue;
+            configIndex++;
+            item = Bank.search().nameContainsInsensitive(key).first().orElseThrow();
+            itemAmount = configItems.get(key);
+
+            clicks += withdrawAmount(item, itemAmount);
+
+            if (clicks == -1) {
+                configIndex = 0;
+                return false;
+            }
+
+            if (clicks >= stopAt) return true;
+        }
+
+        configIndex = 0;
+        return false;
+    }
+
+    private static int withdrawAmount(Widget item, int amount)
+    {
+        if (amount > 28 || amount == -1) { BankInteraction.useItem(item, "Withdraw-All"); return 1; }
+        if (amount == -2) { BankInteraction.useItem(item, "Withdraw-All-but-1"); return 1;  }
+
+        int clicks = 0;
+
+        while (amount >= 10) {
+            BankInteraction.useItem(item, "Withdraw-10");
+            amount -= 10;
+            clicks += 1;
+        }
+        if (Inventory.full()) return -1;
+
+        while (amount >= 5) {
+            BankInteraction.useItem(item, "Withdraw-5");
+            amount -= 5;
+            clicks += 1;
+        }
+        if (Inventory.full()) return -1;
+
+        while (amount >= 1) {
+            BankInteraction.useItem(item, "Withdraw-1");
+            amount -= 1;
+            clicks += 1;
+        }
+
+        return clicks;
+    }
+
+    public static Set<String> checkForItems(Set<String> keys)
+    {
+        Set<String> missingItems = new HashSet<>();
+
+        ItemQuery query;
+
+        for (String k : keys) {
+            query = Bank.search().nameContainsInsensitive(k);
+
+            if (query.result().size() > 1) {
+                RBApi.panic();
+                throw new InvalidConfigException("There were multiple items found in the bank for config item: " + k);
+            }
+
+            if (query.result().size() == 0) {
+                missingItems.add(k);
+            }
+        }
+
+        return missingItems;
+    }
+
 }

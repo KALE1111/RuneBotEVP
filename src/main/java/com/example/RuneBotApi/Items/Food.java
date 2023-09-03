@@ -3,10 +3,7 @@ package com.example.RuneBotApi.Items;
 import com.example.InteractionApi.InventoryInteraction;
 import com.example.RuneBotApi.RBApi;
 import com.example.RuneBotApi.RBConstants;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
+import net.runelite.api.*;
 
 import java.util.HashSet;
 import java.util.Set;

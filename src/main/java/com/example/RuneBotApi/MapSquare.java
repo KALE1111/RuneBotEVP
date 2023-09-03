@@ -16,6 +16,7 @@ public enum MapSquare
     DRAYNOR(12338),
     POLLNIVNEACH(13358),
     ZULRAH(9007),
+    ZUL_ANDRA(8751),
     GRAND_EXCHANGE(12598),
 
     UNNAMED(-1);

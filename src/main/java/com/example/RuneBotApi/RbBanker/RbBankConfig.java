@@ -9,23 +9,23 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("BankConfig")
 public interface RbBankConfig extends Config {
-//
-//    @ConfigItem(
-//            keyName = "bankingLocation",
-//            name = "Banking Location",
-//            description = "Which POH portal are you going to use?",
-//            position = 1
-//    )
-//    default BankingLocation bankingLocation() { return BankingLocation.GRAND_EXCHANGE; }
-//
-//
-//    @ConfigItem(
-//            keyName = "desiredInventory",
-//            name = "Inventory Items",
-//            description = "void mage helm: 1, shark: 10, super rest*: 2, Teleport to house: >3, 100",
-//            position = 3
-//    )
-//    default String desiredItems() { return ""; }
+
+    @ConfigItem(
+            keyName = "bankingLocation",
+            name = "Banking Location",
+            description = "Which POH portal are you going to use?",
+            position = 1
+    )
+    default BankingLocation bankingLocation() { return BankingLocation.GRAND_EXCHANGE; }
+
+
+    @ConfigItem(
+            keyName = "desiredInventory",
+            name = "Inventory Items",
+            description = "void mage*, super restore(4): 2, Teleport to house: ab1, shark: all",
+            position = 3
+    )
+    default String desiredItems() { return ""; }
 //
 //    @ConfigItem(
 //            keyName = "usedAmmo",

@@ -154,4 +154,42 @@ public class RBApi {
                 );
     }
 
+    /**
+     * returns a map in the order the items were provided
+     * we use -1 to represent "withdraw all" and -2 to represent "withdraw all but one"
+     */
+    public static Map<String, Integer> configJSONToHashMap(String inputText)
+    {
+        Map<String, Integer> itemMapping = new LinkedHashMap<>();
+
+        List<String> inputItems = Arrays.stream(
+                inputText
+                    .replace("{","")
+                    .replace("}","")
+                    .replace("*", "")
+                    .split(",")
+                ).map(String::strip)
+                .map(String::toLowerCase)
+                .collect(Collectors.toList()
+        );
+
+        for (String configItem : inputItems) {
+            if (!configItem.contains(":")) {
+                itemMapping.put(configItem, 1);
+                continue;
+            }
+
+            String[] kvp = configItem.split(":");
+            // add allbutone
+
+            int amount = kvp[1].strip().equals("all") ? -1
+                       : kvp[1].strip().equals("ab1") ? -2 : Integer.parseInt(kvp[1].strip());
+
+            itemMapping.put(kvp[0], amount);
+        }
+
+        return itemMapping;
+
+    }
+
 }

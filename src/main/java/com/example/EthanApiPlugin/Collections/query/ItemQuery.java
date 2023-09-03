@@ -60,6 +60,11 @@ public class ItemQuery {
         return this;
     }
 
+    public ItemQuery nameContainsInsensitive(String name) {
+        items = items.stream().filter(item -> item.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
+        return this;
+    }
+
     public ItemQuery nonPlaceHolder() {
         return quantityGreaterThan(0);
     }
@@ -68,7 +73,7 @@ public class ItemQuery {
         items = items.stream().filter(item -> ids.contains(item.getItemId())).collect(Collectors.toList());
         return this;
     }
-    
+
     public ItemQuery nameInList(List<String> names) {
         items = items.stream()
                 .filter(item -> names.stream()
