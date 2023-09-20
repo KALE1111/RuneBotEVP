@@ -1,13 +1,38 @@
 package com.example.EthanApiPlugin;
 
-import com.example.EthanApiPlugin.Collections.*;
+import com.example.EthanApiPlugin.Collections.Bank;
+import com.example.EthanApiPlugin.Collections.BankInventory;
+import com.example.EthanApiPlugin.Collections.DepositBox;
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.Collections.NPCs;
+import com.example.EthanApiPlugin.Collections.Players;
+import com.example.EthanApiPlugin.Collections.ShopInventory;
+import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.EthanApiPlugin.Collections.query.QuickPrayer;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.inject.Inject;
 import lombok.SneakyThrows;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.CollisionData;
+import net.runelite.api.CollisionDataFlag;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.HeadIcon;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.NPC;
+import net.runelite.api.Node;
+import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.Scene;
+import net.runelite.api.SkullIcon;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
@@ -23,19 +48,30 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 
+import javax.inject.Inject;
 import javax.swing.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static net.runelite.api.Varbits.QUICK_PRAYER;
 
 @PluginDescriptor(
-        name = "<html><font color=#86C43F>[RB]</font> ApiPlugin</html>",
+        name = "<html><font color=#86C43F>[RB]</font> Api</html>",
         description = "",
-        tags = {"api"},
+        tags = {"ethan"},
         hidden = false
 )
 public class EthanApiPlugin extends Plugin {
@@ -44,6 +80,7 @@ public class EthanApiPlugin extends Plugin {
     static Client client = RuneLite.getInjector().getInstance(Client.class);
     static PluginManager pluginManager = RuneLite.getInjector().getInstance(PluginManager.class);
     static ItemManager itemManager = RuneLite.getInjector().getInstance(ItemManager.class);
+    static Method doAction = null;
     public static final int[][] directionsMap = {
             {-2, 0},
             {0, 2},
@@ -87,18 +124,20 @@ public class EthanApiPlugin extends Plugin {
     public static boolean loggedIn() {
         return client.getGameState() == GameState.LOGGED_IN;
     }
-    public static boolean inRegion(int regionID){
+
+    public static boolean inRegion(int regionID) {
         List<Integer> mapRegions = Arrays.stream(client.getMapRegions()).boxed().collect(Collectors.toList());
         return mapRegions.contains(regionID);
     }
 
-    public static WorldPoint playerPosition(){
+    public static WorldPoint playerPosition() {
         return client.getLocalPlayer().getWorldLocation();
     }
+
     public static SkullIcon getSkullIcon(Player player) {
         Field skullField = null;
         try {
-            skullField = player.getClass().getDeclaredField("ar");
+            skullField = player.getClass().getDeclaredField("ao");
             skullField.setAccessible(true);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
@@ -106,7 +145,7 @@ public class EthanApiPlugin extends Plugin {
         }
         int var1 = -1;
         try {
-            var1 = skullField.getInt(player) * -2104548197;
+            var1 = skullField.getInt(player) * 321608603;
             skullField.setAccessible(false);
         } catch (IllegalAccessException | NullPointerException e) {
             e.printStackTrace();
@@ -142,7 +181,7 @@ public class EthanApiPlugin extends Plugin {
     }
 
     public static boolean isQuickPrayerEnabled() {
-        return client.getVarbitValue(QUICK_PRAYER) == 1;
+        return client.getVarbitValue(Varbits.QUICK_PRAYER) == 1;
     }
 
 
@@ -192,7 +231,6 @@ public class EthanApiPlugin extends Plugin {
         }
         return HeadIcon.values()[headIconArray[0]];
     }
-
 
     @Deprecated
     public int countItem(String str, WidgetInfo container) {
@@ -314,7 +352,7 @@ public class EthanApiPlugin extends Plugin {
         return null;
     }
 
-    public int getFirstFreeSlot(WidgetInfo container) {
+    public static int getFirstFreeSlot(WidgetInfo container) {
         Widget[] items = client.getWidget(container).getDynamicChildren();
         for (int i = 0; i < items.length; i++) {
             if (items[i].getItemId() == 6512) {
@@ -325,7 +363,7 @@ public class EthanApiPlugin extends Plugin {
     }
 
     @Deprecated
-    public int getEmptySlots(WidgetInfo widgetInfo) {
+    public static int getEmptySlots(WidgetInfo widgetInfo) {
         List<Widget> inventoryItems = Arrays.asList(client.getWidget(widgetInfo.getId()).getDynamicChildren());
         return (int) inventoryItems.stream().filter(item -> item.getItemId() == 6512).count();
     }
@@ -336,7 +374,7 @@ public class EthanApiPlugin extends Plugin {
     }
 
     @Deprecated
-    public TileObject findObject(String objectName) {
+    public static TileObject findObject(String objectName) {
         ArrayList<TileObject> validObjects = new ArrayList<>();
         for (Tile[][] tile : client.getScene().getTiles()) {
             for (Tile[] tiles : tile) {
@@ -366,16 +404,38 @@ public class EthanApiPlugin extends Plugin {
     @SneakyThrows
     public static void invoke(int var0, int var1, int var2, int var3, int var4, String var5, String var6, int var7,
                               int var8) {
-        Class invokeClass = client.getClass().getClassLoader().loadClass("qq");
-        Method invoke = invokeClass.getDeclaredMethod("lm", int.class, int.class, int.class, int.class, int.class,
-                String.class, String.class, int.class, int.class, byte.class);
-        invoke.setAccessible(true);
-        invoke.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, (byte)5);
-        invoke.setAccessible(false);
+        if (doAction == null) {
+            Field classes = ClassLoader.class.getDeclaredField("classes");
+            classes.setAccessible(true);
+            ClassLoader classLoader = client.getClass().getClassLoader();
+            Vector<Class<?>> classesVector = (Vector<Class<?>>) classes.get(classLoader);
+            Class<?>[] params = new Class[]{int.class, int.class, int.class, int.class, int.class, String.class, String.class, int.class, int.class};
+            for (Class<?> aClass : classesVector) {
+                if (doAction != null) {
+                    break;
+                }
+                for (Method declaredMethod : aClass.getDeclaredMethods()) {
+                    if (declaredMethod.getParameterCount() != 10) {
+                        continue;
+                    }
+                    if (declaredMethod.getReturnType() != void.class) {
+                        continue;
+                    }
+                    if (!Arrays.equals(Arrays.copyOfRange(declaredMethod.getParameterTypes(), 0, 9), params)) {
+                        continue;
+                    }
+                    doAction = declaredMethod;
+                    break;
+                }
+            }
+        }
+        doAction.setAccessible(true);
+        doAction.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, (byte) 102);
+        doAction.setAccessible(false);
     }
 
     @Deprecated
-    public TileObject findObject(int id) {
+    public static TileObject findObject(int id) {
         ArrayList<TileObject> validObjects = new ArrayList<>();
         Arrays.stream(client.getScene().getTiles()).flatMap(Arrays::stream).flatMap(Arrays::stream).filter(Objects::nonNull).filter(tile -> tile.getGameObjects() != null && tile.getGameObjects().length != 0).forEach(tile ->
         {
@@ -389,7 +449,7 @@ public class EthanApiPlugin extends Plugin {
     }
 
     @Deprecated
-    public Widget getItemFromList(int[] list, WidgetInfo container) {
+    public static Widget getItemFromList(int[] list, WidgetInfo container) {
         for (int i : list) {
             Widget item = getItem(i, container);
             if (item != null) {
@@ -400,7 +460,7 @@ public class EthanApiPlugin extends Plugin {
     }
 
     @Deprecated
-    public int checkIfWearing(int[] ids) {
+    public static int checkIfWearing(int[] ids) {
 
         if (client.getItemContainer(InventoryID.EQUIPMENT) != null) {
             Item[] equipment = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
@@ -444,7 +504,7 @@ public class EthanApiPlugin extends Plugin {
         int pSY = client.getLocalPlayer().getLocalLocation().getSceneY();
         Point p1 = client.getScene().getTiles()[client.getPlane()][pSX][pSY].getSceneLocation();
         LocalPoint lp = LocalPoint.fromWorld(client, destinationTile);
-        if(lp == null || !lp.isInScene()){
+        if (lp == null || !lp.isInScene()) {
             return new PathResult(false, Integer.MAX_VALUE);
         }
         Point p2 = new Point(lp.getSceneX(), lp.getSceneY());
@@ -590,6 +650,7 @@ public class EthanApiPlugin extends Plugin {
     public static Client getClient() {
         return client;
     }
+
     public static ClientUI getClientUI() {
         return clientUI;
     }
@@ -810,6 +871,7 @@ public class EthanApiPlugin extends Plugin {
         }
         return null;
     }
+
 
 //    	@SneakyThrows
 //    	public static List<WorldPoint> pathToGoal(WorldPoint goal, HashMap<WorldPoint, List<WorldPoint>> paths,
@@ -1148,6 +1210,7 @@ public class EthanApiPlugin extends Plugin {
         }
         return impassible.contains(starting.dx(1).dy(1)) || !walkable.contains(starting.dx(1).dy(1));
     }
+
     static boolean farSEObstructed(WorldPoint starting, HashSet<WorldPoint> impassible, HashSet<WorldPoint> walkable) {
         if (impassible.contains(starting.dx(1).dy(-2)) || !walkable.contains(starting.dx(1).dy(-2))) {
             return true;
@@ -1173,8 +1236,8 @@ public class EthanApiPlugin extends Plugin {
         eventBus.register(RuneLite.getInjector().getInstance(TileObjects.class));
         eventBus.register(RuneLite.getInjector().getInstance(Players.class));
         eventBus.register(RuneLite.getInjector().getInstance(Equipment.class));
-		eventBus.register(RuneLite.getInjector().getInstance(DepositBox.class));
-		eventBus.register(RuneLite.getInjector().getInstance(ShopInventory.class));
-        eventBus.register(RuneLite.getInjector().getInstance(DuelArenaRules.class));
+        eventBus.register(RuneLite.getInjector().getInstance(DepositBox.class));
+        eventBus.register(RuneLite.getInjector().getInstance(ShopInventory.class));
+        //eventBus.register(RuneLite.getInjector().getInstance(Shop.class));
     }
 }
