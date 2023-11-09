@@ -52,6 +52,7 @@ import javax.inject.Inject;
 import javax.swing.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,7 +138,7 @@ public class EthanApiPlugin extends Plugin {
     public static SkullIcon getSkullIcon(Player player) {
         Field skullField = null;
         try {
-            skullField = player.getClass().getDeclaredField("ao");
+            skullField = player.getClass().getDeclaredField("ay");
             skullField.setAccessible(true);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
@@ -145,7 +146,7 @@ public class EthanApiPlugin extends Plugin {
         }
         int var1 = -1;
         try {
-            var1 = skullField.getInt(player) * 321608603;
+            var1 = skullField.getInt(player) * 705058777;
             skullField.setAccessible(false);
         } catch (IllegalAccessException | NullPointerException e) {
             e.printStackTrace();
@@ -184,33 +185,91 @@ public class EthanApiPlugin extends Plugin {
         return client.getVarbitValue(Varbits.QUICK_PRAYER) == 1;
     }
 
+    static String animationField = null;
+
+
+    @SneakyThrows
+    public static void setSelectedSpellChildIndex(int index){
+        Class cli = client.getClass();
+        Field pf = cli.getDeclaredField("pf");
+        pf.setAccessible(true);
+        pf.set(client,(int)index * 490485615);
+        pf.setAccessible(false);
+    }
+
+
+    //client.setSelectedSpellWidget(WidgetInfo.INVENTORY.getId()); //idk why the naming but this works :s
+                //client.setSelectedSpellChildIndex(getLastInventoryItem(ItemID.KNIFE).getIndex());
+                //client.setSelectedSpellItemId(ItemID.KNIFE); this should work?
+    @SneakyThrows
+    public static void setSelectedSpellItemId(int index){
+        Class cli = client.getClass();
+        Field pj = cli.getDeclaredField("pj");
+        pj.setAccessible(true);
+        pj.set(client,(int)index * -1680657639);
+        pj.setAccessible(false);
+    }
 
     @SneakyThrows
     public static int getAnimation(NPC npc) {
-        Field animation = npc.getClass().getSuperclass().getDeclaredField("ck");
+        if (npc == null) {
+            return -1;
+        }
+        if (animationField == null) {
+            for (Field declaredField : npc.getClass().getSuperclass().getDeclaredFields()) {
+                if (declaredField == null) {
+                    continue;
+                }
+                declaredField.setAccessible(true);
+                if (declaredField.getType() != int.class) {
+                    continue;
+                }
+                if (Modifier.isFinal(declaredField.getModifiers())) {
+                    continue;
+                }
+                if (Modifier.isStatic(declaredField.getModifiers())) {
+                    continue;
+                }
+                int value = declaredField.getInt(npc);
+                declaredField.setInt(npc, 4795789);
+                if (npc.getAnimation() == 1375718357 * 4795789) {
+                    animationField = declaredField.getName();
+                    declaredField.setInt(npc, value);
+                    declaredField.setAccessible(false);
+                    break;
+                }
+                declaredField.setInt(npc, value);
+                declaredField.setAccessible(false);
+            }
+        }
+        if (animationField == null) {
+            return -1;
+        }
+        Field animation = npc.getClass().getSuperclass().getDeclaredField(animationField);
         animation.setAccessible(true);
-        int anim = animation.getInt(npc) * -1553687919;
+        int anim = animation.getInt(npc) * 1375718357;
         animation.setAccessible(false);
         return anim;
     }
 
     @SneakyThrows
     public static int pathLength(NPC npc) {
-        Field pathLength = npc.getClass().getSuperclass().getDeclaredField("dq");
+        Field pathLength = npc.getClass().getSuperclass().getDeclaredField("dl");
         pathLength.setAccessible(true);
-        int path = pathLength.getInt(npc) * -1388670275;
+        int path = pathLength.getInt(npc) * -1385308684;
         pathLength.setAccessible(false);
         return path;
     }
 
     @SneakyThrows
     public static int pathLength(Player player) {
-        Field pathLength = player.getClass().getSuperclass().getDeclaredField("dq");
+        Field pathLength = player.getClass().getSuperclass().getDeclaredField("dl");
         pathLength.setAccessible(true);
-        int path = pathLength.getInt(player) * -1388670275;
+        int path = pathLength.getInt(player) * -1385308684;
         pathLength.setAccessible(false);
         return path;
     }
+
 
     @SneakyThrows
     public static HeadIcon getHeadIcon(NPC npc) {
