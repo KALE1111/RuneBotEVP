@@ -232,7 +232,7 @@ public class EthanApiPlugin extends Plugin {
                 }
                 int value = declaredField.getInt(npc);
                 declaredField.setInt(npc, 4795789);
-                if (npc.getAnimation() == 1375718357 * 4795789) {
+                if (npc.getAnimation() == -760216869 * 4795789) {
                     animationField = declaredField.getName();
                     declaredField.setInt(npc, value);
                     declaredField.setAccessible(false);
@@ -247,7 +247,7 @@ public class EthanApiPlugin extends Plugin {
         }
         Field animation = npc.getClass().getSuperclass().getDeclaredField(animationField);
         animation.setAccessible(true);
-        int anim = animation.getInt(npc) * 1375718357;
+        int anim = animation.getInt(npc) * -760216869;
         animation.setAccessible(false);
         return anim;
     }
@@ -277,18 +277,19 @@ public class EthanApiPlugin extends Plugin {
         for (Method declaredMethod : npc.getComposition().getClass().getDeclaredMethods()) {
             if (declaredMethod.getReturnType() == short[].class && declaredMethod.getParameterTypes().length == 0) {
                 getHeadIconArrayMethod = declaredMethod;
-                break;
+                if (getHeadIconArrayMethod == null) {
+                    continue;
+                }
+                getHeadIconArrayMethod.setAccessible(true);
+                short[] headIconArray = (short[]) getHeadIconArrayMethod.invoke(npc.getComposition());
+                getHeadIconArrayMethod.setAccessible(false);
+                if (headIconArray == null || headIconArray.length == 0) {
+                    continue;
+                }
+                return HeadIcon.values()[headIconArray[0]];
             }
         }
-        if (getHeadIconArrayMethod == null) {
-            return null;
-        }
-        getHeadIconArrayMethod.setAccessible(true);
-        short[] headIconArray = (short[]) getHeadIconArrayMethod.invoke(npc.getComposition());
-        if (headIconArray == null || headIconArray.length == 0) {
-            return null;
-        }
-        return HeadIcon.values()[headIconArray[0]];
+        return null;
     }
 
     @Deprecated
