@@ -135,6 +135,51 @@ public class Banks {
         return withdrawItemsWithAmount(configItems, clickLimiter);
     }
 
+    public static boolean withdrawItems(Map<String, Integer> configItems, int clickLimiter, boolean sensy)
+    {
+        if(sensy){
+            return withdrawItemsWithAmount(configItems, clickLimiter,true);
+        }
+        else {
+            return withdrawItemsWithAmount(configItems, clickLimiter);
+        }
+    }
+
+    private static boolean withdrawItemsWithAmount(Map<String, Integer> configItems, int clickLimiter, boolean Sensitive) {
+        int index = 0;
+        int clicks = 0;
+        stopAt = clickLimiter;
+        Set<String> keys = configItems.keySet();
+        Iterator var7 = keys.iterator();
+
+        while(var7.hasNext()) {
+            String key = (String)var7.next();
+            if (index++ >= configIndex) {
+                ++configIndex;
+                Widget item;
+                if(Sensitive) {
+                     item = (Widget) Bank.search().withName(key).first().orElseThrow();
+                }
+                else{
+                     item = (Widget) Bank.search().nameContainsInsensitive(key).first().orElseThrow();
+                }
+                int itemAmount = (Integer)configItems.get(key);
+                clicks += withdrawAmount(item, itemAmount);
+                if (clicks == -1) {
+                    configIndex = 0;
+                    return false;
+                }
+
+                if (clicks >= stopAt) {
+                    return true;
+                }
+            }
+        }
+
+        configIndex = 0;
+        return false;
+    }
+
     private static boolean withdrawItemsWithAmount(Map<String, Integer> configItems, int clickLimiter)
     {
         int index = 0;
@@ -194,6 +239,33 @@ public class Banks {
         }
 
         return clicks;
+    }
+
+    public static Set<String> checkForItems(Set<String> keys, boolean sensitive)
+    {
+        Set<String> missingItems = new HashSet<>();
+
+        ItemQuery query;
+
+        for (String k : keys) {
+            if(!sensitive) {
+                query = Bank.search().nameContainsInsensitive(k);
+            }
+            else{
+                query = Bank.search().withName(k);
+            }
+
+            if (query.result().size() > 1) {
+                RBApi.panic();
+                throw new InvalidConfigException("There were multiple items found in the bank for config item: " + k);
+            }
+
+            if (query.result().size() == 0) {
+                missingItems.add(k);
+            }
+        }
+
+        return missingItems;
     }
 
     public static Set<String> checkForItems(Set<String> keys)

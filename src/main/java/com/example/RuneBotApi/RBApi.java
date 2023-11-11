@@ -192,4 +192,50 @@ public class RBApi {
 
     }
 
+    public static Map<String, Integer> configJSONToHashMap(String inputText, boolean keepUppercase)
+    {
+        Map<String, Integer> itemMapping = new LinkedHashMap<>();
+        List<String> inputItems = new ArrayList<>();
+        if(keepUppercase) {
+            inputItems = Arrays.stream(
+                    inputText
+                            .replace("{", "")
+                            .replace("}", "")
+                            .replace("*", "")
+                            .split(",")
+            ).map(String::strip)
+                    .collect(Collectors.toList()
+                    );
+        }
+        else{
+            inputItems = Arrays.stream(
+                    inputText
+                            .replace("{", "")
+                            .replace("}", "")
+                            .replace("*", "")
+                            .split(",")
+            ).map(String::strip)
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList()
+                    );
+        }
+        for (String configItem : inputItems) {
+            if (!configItem.contains(":")) {
+                itemMapping.put(configItem, 1);
+                continue;
+            }
+
+            String[] kvp = configItem.split(":");
+            // add allbutone
+
+            int amount = kvp[1].strip().equals("all") ? -1
+                    : kvp[1].strip().equals("ab1") ? -2 : Integer.parseInt(kvp[1].strip());
+
+            itemMapping.put(kvp[0], amount);
+        }
+
+        return itemMapping;
+
+    }
+
 }

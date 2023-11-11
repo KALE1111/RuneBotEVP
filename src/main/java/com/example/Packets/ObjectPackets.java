@@ -4,6 +4,7 @@ import com.example.EthanApiPlugin.Collections.query.TileObjectQuery;
 import com.example.PacketUtils.PacketDef;
 import com.example.PacketUtils.PacketReflection;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.example.PacketUtils.PacketReflection.client;
 
+@Slf4j
 public class ObjectPackets {
     @SneakyThrows
     public static void queueObjectAction(int actionFieldNo, int objectId, int worldPointX, int worldPointY,
@@ -81,6 +83,7 @@ public class ObjectPackets {
         if (num < 1 || num > 10) {
             return;
         }
+        log.info(" PACKET num:{},id:{},x:{},y:{}",num, object.getId(), wp.getX(), wp.getY());
         queueObjectAction(num, object.getId(), wp.getX(), wp.getY(), ctrlDown);
     }
 

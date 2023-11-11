@@ -58,6 +58,24 @@ public class Bank {
         }
     }
 
+    public static boolean hasItem(int id) {
+        return hasItem(id, 1, false);
+    }
+
+    public static boolean hasItem(int id, int amount) {
+        return getItemAmount(id, false) >= amount;
+    }
+
+    public static boolean hasItem(int id, int amount, boolean stacked) {
+        return getItemAmount(id, stacked) >= amount;
+    }
+
+    public static int getItemAmount(int itemId, boolean stacked) {
+        return stacked ?
+                Bank.search().withId(itemId).first().map(Widget::getItemQuantity).orElse(0) :
+                Bank.search().withId(itemId).result().size();
+    }
+
     @Subscribe
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
         if (gameStateChanged.getGameState() == GameState.HOPPING || gameStateChanged.getGameState() == GameState.LOGIN_SCREEN || gameStateChanged.getGameState() == GameState.CONNECTION_LOST) {

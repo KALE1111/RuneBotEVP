@@ -58,6 +58,23 @@ public class Equipment {
 
     }
 
+    public static boolean hasItems(String ...names) {
+        for (String name : names) {
+            if (!hasItem(name)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean hasItem(int id) {
+        return Equipment.search().withId(id).first().isPresent();
+    }
+    public static boolean hasItem(String name) {
+        return Equipment.search().nameContainsNoCase(name).first().isPresent();
+    }
+
     @SneakyThrows
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged e) {
