@@ -50,6 +50,13 @@ public class RbBankController extends Plugin {
     //var for if we want to sell items at [config] hours
 
 
+    public RbBankController(String inventoryItems)
+    {
+        this.resupplyController = new ResupplyController(config, inventoryItems);
+//        state = State.BANK_MANAGER;
+        state = State.TELEPORT;
+    }
+
     public RbBankController()
     {
         this.resupplyController = new ResupplyController(config);

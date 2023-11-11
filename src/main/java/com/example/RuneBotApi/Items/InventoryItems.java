@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.example.PacketUtils.PacketReflection.client;
+import static com.example.RuneBotApi.RBConstants.setOfFoodIds;
 
 
 public class InventoryItems {
@@ -47,5 +48,15 @@ public class InventoryItems {
         }
 
         return false;
+    }
+
+    public static int getFoodInInv()
+    {
+        int amount = 0;
+        for (int i = 0; i < 29; ++i) {
+            Item item = container.getItem(i);
+            if (item != null && setOfFoodIds.contains(item.getId())) amount++;
+        }
+        return 0;
     }
 }

@@ -18,9 +18,18 @@ public class ResupplyController {
     private RbBankConfig config;
     private int timeout = 0;
 
+    private String desiredItems;
+
     public ResupplyController(RbBankConfig config)
     {
         this.config = config;
+        this.desiredItems = config.desiredItems();
+    }
+
+    public ResupplyController(RbBankConfig config, String inventoryItems)
+    {
+        this.config = config;
+        this.desiredItems = inventoryItems;
     }
 
     public boolean eventLoop()
@@ -42,7 +51,7 @@ public class ResupplyController {
                                   else state = State.CHECK_FOR_ITEMS;
             break; case SELL_ON_GE:
             break; case CHECK_FOR_ITEMS:
-                Set<String> missingItems = Banks.checkForItems(RBApi.configJSONToHashMap(config.desiredItems()).keySet());
+                Set<String> missingItems = Banks.checkForItems(RBApi.configJSONToHashMap(desiredItems).keySet());
                 if (!missingItems.isEmpty()) {
 //                    if (config.buyItemsIfNeeded()) {
                     if (false) {
@@ -57,7 +66,7 @@ public class ResupplyController {
             break; case REBUY_MISSING_ITEMS:
                 System.out.println();
             break; case WITHDRAW_ITEMS:
-                if (!Banks.withdrawItems(RBApi.configJSONToHashMap(config.desiredItems()))) state = State.CLOSE_BANK;
+                if (!Banks.withdrawItems(RBApi.configJSONToHashMap(desiredItems))) state = State.CLOSE_BANK;
             break; case CLOSE_BANK:
                 Movement.moveRelative(RBRandom.randRange(-10, -1), RBRandom.randRange(-10, 0));
                 return false;

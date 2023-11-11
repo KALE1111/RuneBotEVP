@@ -81,6 +81,7 @@ public class Banks {
             } catch (Exception e) {
                 RBApi.panic();
             }
+            attemptingPin = false;
         }
 
         return false;
