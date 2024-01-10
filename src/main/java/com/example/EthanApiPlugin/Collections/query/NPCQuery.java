@@ -1,5 +1,6 @@
 package com.example.EthanApiPlugin.Collections.query;
 
+import com.example.EthanApiPlugin.Collections.Players;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -124,6 +125,11 @@ public class NPCQuery {
         npcs = npcs.stream().filter(npc -> !npc.isInteracting()).collect(Collectors.toList());
         return this;
     }
+    public NPCQuery noOneInteractingWith(){
+        npcs = npcs.stream().filter(npc -> Players.search().interactingWith(npc).isEmpty()).collect(Collectors.toList());
+        return this;
+    }
+
 
     public NPCQuery meleeable() {
         List<WorldPoint> meleeTiles = new ArrayList<>();
