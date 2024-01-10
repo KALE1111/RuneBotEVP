@@ -263,74 +263,71 @@ public class BufferMethods {
         }
     }
 
-    public static Pair<byte[], Integer> de(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (128 + writtenValue);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 8);
+    public static Pair<byte[], Integer> bs(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 8);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)writtenValue;
         return Pair.of(array, offset);
     }
 
-    public static Pair<byte[], Integer> bt(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) writtenValue;
+    public static Pair<byte[], Integer> df(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(128 + writtenValue);
         return Pair.of(array, offset);
     }
 
-    public static Pair<byte[], Integer> bu(byte[] array, int offset, int writtenValue){
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 8);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) writtenValue;
+    public static Pair<byte[], Integer> be(byte[] array, int offset, int writtenValue){
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)writtenValue;
         return Pair.of(array, offset);
     }
 
-    public static Pair<byte[], Integer> dz(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) writtenValue;
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 8);
+    public static Pair<byte[], Integer> eh(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 16);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 24);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)writtenValue;
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 8);
         return Pair.of(array, offset);
     }
 
-    public static Pair<byte[], Integer> bh(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 24);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 16);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 8);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) writtenValue;
+    public static Pair<byte[], Integer> dx(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(128 - writtenValue);
+        return Pair.of(array, offset);
+    }
+
+    public static Pair<byte[], Integer> ej(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)writtenValue;
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 8);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 16);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 24);
         return Pair.of(array, offset);
     }
 
     public static Pair<byte[], Integer> el(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) writtenValue;
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 8);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 16);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 24);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)writtenValue;
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 8);
         return Pair.of(array, offset);
     }
 
-    public static Pair<byte[], Integer> dl(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 8);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (128 + writtenValue);
+    public static Pair<byte[], Integer> bz(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 24);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 16);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 8);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)writtenValue;
         return Pair.of(array, offset);
     }
 
-    public static Pair<byte[], Integer> dm(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (0 - writtenValue);
+    public static Pair<byte[], Integer> eo(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(128 + writtenValue);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 8);
         return Pair.of(array, offset);
     }
 
-    public static Pair<byte[], Integer> ea(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 16);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 24);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) writtenValue;
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 8);
+    public static Pair<byte[], Integer> dos(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(0 - writtenValue);
         return Pair.of(array, offset);
     }
 
-    public static Pair<byte[], Integer> es(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 8);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) writtenValue;
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 24);
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (writtenValue >> 16);
-        return Pair.of(array, offset);
-    }
-
-    public static Pair<byte[], Integer> dr(byte[] array, int offset, int writtenValue) {
-        array[(offset += -993585503) * 1904364897 - 1] = (byte) (128 - writtenValue);
+    public static Pair<byte[], Integer> et(byte[] array, int offset, int writtenValue) {
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(writtenValue >> 8);
+        array[(offset += -1361275855) * -1309784879 - 1] = (byte)(128 + writtenValue);
         return Pair.of(array, offset);
     }
 

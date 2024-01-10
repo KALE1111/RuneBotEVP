@@ -66,7 +66,12 @@ public class PacketReflection {
 
     @SneakyThrows
     public static void writeObject(String obfname, Object buffer, Object input) {
-        BufferMethods.makeBufferCall(obfname, buffer, (Integer) input);
+        if(obfname.equals("do")){
+            BufferMethods.makeBufferCall("dos", buffer, (Integer) input);
+        }
+        else {
+            BufferMethods.makeBufferCall(obfname, buffer, (Integer) input);
+        }
     }
 
     @SneakyThrows

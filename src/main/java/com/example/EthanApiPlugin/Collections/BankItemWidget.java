@@ -809,6 +809,16 @@ public class BankItemWidget implements Widget {
     }
 
     @Override
+    public void setOnScrollWheelListener(Object ...args){
+
+    }
+
+    @Override
+    public Widget createStaticChild(int type){
+        return null;
+    }
+
+    @Override
     public void setOnVarTransmitListener(Object... args) {
 
     }
