@@ -1,6 +1,9 @@
 package com.example.EthanApiPlugin.Collections;
 
 import com.example.EthanApiPlugin.Collections.query.EquipmentItemQuery;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -55,8 +58,32 @@ public class Equipment {
     }
 
     public static void RetryCollection(){
+		equipment.clear();
+		int i = -1;
+		for (Item item : client.getItemContainer().getItems(InventoryID.EQUIPMENT.getId())) {
+			i++;
+			if (item == null) {
+				continue;
+			}
+			if (item.getId() == 6512 || item.getId() == -1) {
+				continue;
+			}
+			int map = 27;
+			try{
+				map = equipmentSlotWidgetMapping.get(i);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				System.out.println("Unmapped Equipment Change, expected behavior at BA/SW");
+			}
 
+			Widget w = client.getWidget(WidgetInfo.EQUIPMENT.getGroupId(), map);
+			if (w == null || w.getActions() == null) {
+				continue;
+			}
+			equipment.add(new EquipmentItemWidget(w.getName(), item.getId(), w.getId(), -1, w.getActions()));
+		}
     }
+
 
     public static boolean hasItems(String ...names) {
         for (String name : names) {
@@ -105,7 +132,7 @@ public class Equipment {
                 if (w == null || w.getActions() == null) {
                     continue;
                 }
-                equipment.add(new EquipmentItemWidget(w.getName(), item.getId(), w.getId(), i, w.getActions()));
+                equipment.add(new EquipmentItemWidget(w.getName(), item.getId(), w.getId(), -1, w.getActions()));
             }
         }
     }
