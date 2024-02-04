@@ -53,7 +53,6 @@ public class Equipment {
     }
 
     public static EquipmentItemQuery search() {
-        RetryCollection();
         return new EquipmentItemQuery(equipment);
     }
 
