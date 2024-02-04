@@ -24,7 +24,6 @@ public class BankInventory {
     static List<Widget> bankInventoryItems = new ArrayList<>();
 
     public static ItemQuery search() {
-        RetryCollection();
         return new ItemQuery(bankInventoryItems.stream().filter(Objects::nonNull).collect(Collectors.toList()));
     }
 
