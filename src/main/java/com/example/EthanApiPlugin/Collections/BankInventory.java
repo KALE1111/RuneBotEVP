@@ -198,7 +198,6 @@ public class BankInventory {
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged e) {
         //client.runScript(6009, 9764864, 28, 1, -1);
-        System.out.println(e.getContainerId());
         if (e.getContainerId() == 95 || e.getContainerId() == 93) {
             if (client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) == null) {
                 BankInventory.bankInventoryItems.clear();

@@ -62,7 +62,6 @@ public class DuelArenaRules
             return false;
         }
         if(second) {
-            System.out.println(child.getSpriteId());
             if (child.getSpriteId() == 1193) {
                 return true;
             }
