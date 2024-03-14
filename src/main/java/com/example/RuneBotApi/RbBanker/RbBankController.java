@@ -71,7 +71,7 @@ public class RbBankController extends Plugin {
                 }
                 InventoryInteraction.useItem(RBConstants.houseTabId, "Break");
                 timeout = 8;
-                state = State.DOOR_STUCK;
+                state = State.USE_POOL;
             break; case USE_POOL:
                 Optional<TileObject> pool = TileObjects.search().withAction("Drink").first();
                 if (pool.isPresent()) {

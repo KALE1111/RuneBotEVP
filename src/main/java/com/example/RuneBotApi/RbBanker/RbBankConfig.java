@@ -16,7 +16,7 @@ public interface RbBankConfig extends Config {
             description = "Which POH portal are you going to use?",
             position = 1
     )
-    default BankingLocation bankingLocation() { return BankingLocation.GRAND_EXCHANGE; }
+    default BankingLocation bankingLocation() { return BankingLocation.EDGVILLE; }
 
 
     @ConfigItem(
@@ -87,7 +87,8 @@ public interface RbBankConfig extends Config {
     @Getter
     enum BankingLocation
     {
-        GRAND_EXCHANGE(new BankingData("_GE or Varrock portal", "Grand Exchange", MapSquare.GRAND_EXCHANGE.getId()));
+        EDGVILLE(new BankingData("Amulet of Glory", "Edgeville", MapSquare.EDGEVILLE.getId())),
+        GRAND_EXCHANGE(new BankingData("_GE or Varrock portal", "Varrock", MapSquare.GRAND_EXCHANGE.getId()));
 
         private final BankingData bankingData;
     }

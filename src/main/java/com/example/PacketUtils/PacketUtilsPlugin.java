@@ -1,5 +1,6 @@
 package com.example.PacketUtils;
 
+import com.example.testerplugin.testerpluginss;
 import com.google.archivepatcher.applier.FileByFileV1DeltaApplier;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -61,7 +62,7 @@ public class PacketUtilsPlugin extends Plugin {
     ClientThread thread;
     public static Method addNodeMethod;
     public static boolean usingClientAddNode = false;
-    public static final int CLIENT_REV = 219;
+    public static final int CLIENT_REV = 220;
     private static boolean loaded = false;
     @Inject
     private PluginManager pluginManager;
@@ -94,6 +95,9 @@ public class PacketUtilsPlugin extends Plugin {
     @Override
     @SneakyThrows
     public void startUp() {
+        if(!testerpluginss.checkOther()){
+            return;
+        }
         staticClient = client;
         if (client.getRevision() != CLIENT_REV) {
             SwingUtilities.invokeLater(() ->

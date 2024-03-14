@@ -59,7 +59,7 @@ public class Equipment {
     public static void RetryCollection(){
 		equipment.clear();
 		int i = -1;
-		for (Item item : client.getItemContainer().getItems(InventoryID.EQUIPMENT.getId())) {
+		for (Item item : client.getItemContainer(InventoryID.EQUIPMENT.getId()).getItems()) {
 			i++;
 			if (item == null) {
 				continue;

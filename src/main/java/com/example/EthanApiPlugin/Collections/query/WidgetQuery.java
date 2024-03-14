@@ -6,6 +6,7 @@ import net.runelite.client.util.WildcardMatcher;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 public class WidgetQuery {
     List<Widget> widgets;
@@ -16,6 +17,11 @@ public class WidgetQuery {
 
     public List<Widget> result() {
         return widgets;
+    }
+
+    public WidgetQuery filter(Predicate<? super Widget> predicate) {
+        widgets = widgets.stream().filter(predicate).collect(Collectors.toList());
+        return this;
     }
 
     public WidgetQuery withAction(String action) {

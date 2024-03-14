@@ -787,10 +787,7 @@ public class EquipmentItemWidget implements Widget {
 
     }
 
-    @Override
-    public Widget createStaticChild(int type){
-        return null;
-    }
+
 
 
     @Override

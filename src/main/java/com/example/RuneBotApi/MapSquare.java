@@ -17,6 +17,7 @@ public enum MapSquare
     POLLNIVNEACH(13358),
     ZULRAH(9007),
     ZUL_ANDRA(8751),
+    EDGEVILLE(12342),
     GRAND_EXCHANGE(12598),
 
     UNNAMED(-1);

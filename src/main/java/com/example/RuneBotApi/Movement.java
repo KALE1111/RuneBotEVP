@@ -13,7 +13,7 @@ public class Movement {
     {
         int ctrl = ctrlDown ? 2 : 0;
         MousePackets.queueClickPacket();
-        PacketReflection.sendPacket(PacketDef.MOVE_GAMECLICK, worldPointX, worldPointY, ctrl, 5);
+        PacketReflection.sendPacket(PacketDef.getMoveGameClick(), worldPointX, worldPointY, ctrl, 5);
     }
 
     public static void move(WorldPoint location)

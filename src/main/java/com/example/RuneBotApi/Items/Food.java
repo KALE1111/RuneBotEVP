@@ -45,4 +45,21 @@ public class Food {
 
         return -1;
     }
+
+    public static boolean eatFood(int foodId)
+    {
+        Set<Integer> inventoryIds = new HashSet<>();
+        for (int i = 0; i < 29; ++i) {
+            Item item = container.getItem(i);
+            if (item != null) inventoryIds.add(item.getId());
+        }
+
+        if (inventoryIds.contains(foodId)) {
+            InventoryInteraction.useItem(foodId, "Eat");
+            return true;
+        }
+
+        return false;
+    }
+
 }

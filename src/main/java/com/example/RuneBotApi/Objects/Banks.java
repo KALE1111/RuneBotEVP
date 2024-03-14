@@ -4,6 +4,7 @@ import com.example.EthanApiPlugin.Collections.Bank;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.EthanApiPlugin.Collections.query.ItemQuery;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.InteractionApi.BankInteraction;
 import com.example.InteractionApi.TileObjectInteraction;
 import com.example.Packets.MousePackets;
@@ -278,7 +279,8 @@ public class Banks {
             query = Bank.search().nameContainsInsensitive(k);
 
             if (query.result().size() > 1) {
-                RBApi.panic();
+                //RBApi.panic();
+                EthanApiPlugin.sendClientMessage("There were multiple items found in the bank for config item: " + k);
                 throw new InvalidConfigException("There were multiple items found in the bank for config item: " + k);
             }
 

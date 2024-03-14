@@ -2,6 +2,7 @@ package com.example.RuneBotApi.RbBanker;
 
 
 import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.RuneBotApi.Movement;
 import com.example.RuneBotApi.Objects.Banks;
 import com.example.RuneBotApi.RBApi;
@@ -49,7 +50,8 @@ public class ResupplyController {
                         state = State.REBUY_MISSING_ITEMS;
                         return true;
                     } else {
-                        RBApi.panic();
+                        //RBApi.panic();
+                        EthanApiPlugin.sendClientMessage("The following item(s) were missing from your bank: " + missingItems + ".");
                         throw new NoSuchBankItemException("The following item(s) were missing from your bank: " + missingItems + ".");
                     }
                 }

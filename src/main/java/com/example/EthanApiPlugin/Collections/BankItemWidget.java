@@ -813,10 +813,7 @@ public class BankItemWidget implements Widget {
 
     }
 
-    @Override
-    public Widget createStaticChild(int type){
-        return null;
-    }
+
 
     @Override
     public void setOnVarTransmitListener(Object... args) {
