@@ -326,7 +326,6 @@ public enum WidgetInfoExtended {
     PRAYER_PIETY(WidgetID.PRAYER_GROUP_ID, WidgetID.Prayer.PIETY),
     PRAYER_RIGOUR(WidgetID.PRAYER_GROUP_ID, WidgetID.Prayer.RIGOUR),
     PRAYER_AUGURY(WidgetID.PRAYER_GROUP_ID, WidgetID.Prayer.AUGURY),
-
     QUICK_PRAYER_PRAYERS(WidgetID.QUICK_PRAYERS_GROUP_ID, WidgetID.QuickPrayer.PRAYERS),
 
     COMBAT_LEVEL(WidgetID.COMBAT_GROUP_ID, WidgetID.Combat.LEVEL),
