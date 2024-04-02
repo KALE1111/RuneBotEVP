@@ -11,6 +11,8 @@ publishing {
     }
     repositories {
         maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/SkylerPIlot/RBEVPmvn")
             credentials {
                 username 'admin'
                 password 'password'
@@ -28,10 +30,12 @@ repositories {
     mavenCentral()
 }
 
-def runeLiteVersion = '1.10.6'
+def runeLiteVersion = 'latest.release'
 
 dependencies {
-    compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
+    //TODO: Add rev dependencies etc
+    /*compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
+    compileOnly group: 'net.runelite', name: 'runelite-api', version: runeLiteVersion
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     testImplementation 'junit:junit:4.12'
@@ -39,6 +43,26 @@ dependencies {
     testImplementation group: 'net.runelite', name: 'jshell', version: runeLiteVersion
     implementation 'org.json:json:20230227'
     implementation 'org.roaringbitmap:RoaringBitmap:0.9.44'
+    implementation("org.benf:cfr:0.152")*/
+    compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    implementation 'org.json:json:20230227'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
+    implementation 'org.roaringbitmap:RoaringBitmap:0.9.44'
+    implementation("org.benf:cfr:0.152")
+    implementation(group: "org.java-websocket", name: "Java-WebSocket", version: "1.5.2")
+
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
+    testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
+    testImplementation 'org.roaringbitmap:RoaringBitmap:0.9.44'
+
+    //runtimeOnly group: 'net.runelite', name:'client', version: runeLiteVersion
+    //runtimeOnly 'org.projectlombok:lombok:1.18.20'
+    runtimeOnly 'org.benf:cfr:0.152'
 
 }
 sourceSets {
@@ -53,7 +77,7 @@ sourceSets {
 }
 
 group = 'com.example'
-version = '0.0.1'
+version = '1.4.12'
 sourceCompatibility = "11"
 
 
