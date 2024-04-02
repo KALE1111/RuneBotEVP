@@ -1,14 +1,6 @@
 package com.example.EthanApiPlugin;
 
-import com.example.EthanApiPlugin.Collections.Bank;
-import com.example.EthanApiPlugin.Collections.BankInventory;
-import com.example.EthanApiPlugin.Collections.DepositBox;
-import com.example.EthanApiPlugin.Collections.Equipment;
-import com.example.EthanApiPlugin.Collections.Inventory;
-import com.example.EthanApiPlugin.Collections.NPCs;
-import com.example.EthanApiPlugin.Collections.Players;
-import com.example.EthanApiPlugin.Collections.ShopInventory;
-import com.example.EthanApiPlugin.Collections.TileObjects;
+import com.example.EthanApiPlugin.Collections.*;
 import com.example.EthanApiPlugin.Collections.query.QuickPrayer;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -1298,6 +1290,6 @@ public class EthanApiPlugin extends Plugin {
         eventBus.register(RuneLite.getInjector().getInstance(Equipment.class));
         eventBus.register(RuneLite.getInjector().getInstance(DepositBox.class));
         eventBus.register(RuneLite.getInjector().getInstance(ShopInventory.class));
-        //eventBus.register(RuneLite.getInjector().getInstance(Shop.class));
+        eventBus.register(RuneLite.getInjector().getInstance(Shop.class));
     }
 }
